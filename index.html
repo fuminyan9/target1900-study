@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f8fb">
-<title>Target 1900 | 3秒音声リコール + 19日計画</title>
+<title>Target 1900 | 3秒音声リコール + 適応復習</title>
 <style>
 :root{
   --bg:#f6f7fb;--panel:#fff;--text:#15171c;--muted:#6e7480;--line:#e7e9ef;
@@ -69,6 +69,10 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
 .plan-metric span{display:block;color:var(--muted);font-size:10px;font-weight:800}
 .plan-metric b{display:block;font-size:20px;margin-top:1px}
 .plan-note{font-size:11px;color:var(--muted);line-height:1.55;margin:10px 2px 0}
+.plan-cap-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);background:#fafbfc;border-radius:14px;padding:11px 12px;margin:8px 0 12px}
+.plan-cap-row strong{display:block;font-size:12px}.plan-cap-row span{display:block;font-size:10px;color:var(--muted);line-height:1.45;margin-top:2px}
+.plan-cap-row select{flex:none;min-width:92px}
+.plan-backlog{background:var(--warnbg);color:#714a08;border-radius:13px;padding:9px 11px;font-size:11px;line-height:1.5;margin:0 0 11px}
 .plan-settings{margin-top:13px;border-top:1px solid var(--line);padding-top:11px}
 .plan-settings summary{cursor:pointer;font-size:12px;font-weight:850;color:#4f5663;list-style:none}
 .plan-settings summary::-webkit-details-marker{display:none}
@@ -166,7 +170,7 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
 <body>
 <div class="app">
   <header class="topbar">
-    <div class="brand">Target 1900 <small>3秒音声リコール · 1日100語</small></div>
+    <div class="brand">Target 1900 <small>3秒音声リコール · 軽量適応復習 · 1日100語</small></div>
     <button class="iconbtn" id="quickSpeak" aria-label="音声テスト">🔊</button>
   </header>
 
@@ -174,7 +178,7 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
     <section class="view active" id="homeView">
       <div class="card hero">
         <h1>思い出してから、答えを見る。</h1>
-        <p>英単語を見て音声を聞き、3秒以内に意味を想起。間違いは数問後と後日に再出題します。</p>
+        <p>英単語を見て音声を聞き、3秒以内に意味を想起。正解速度と誤答履歴に応じて次回復習を自動調整します。</p>
         <div class="data-status">
           <span class="dot" id="dataDot"></span>
           <div><strong id="dataTitle">1900語を収録済み</strong><span id="dataSub">ファイル読み込み不要ですぐ学習できます</span></div>
@@ -204,10 +208,15 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
         <div class="plan-progress"><div id="planProgressBar" style="width:0%"></div></div>
         <div class="plan-metrics">
           <div class="plan-metric"><span>今日まだ新出</span><b id="planRemaining">100</b></div>
-          <div class="plan-metric"><span>いま期限の復習</span><b id="planDue">0</b></div>
+          <div class="plan-metric"><span>今日出す復習 / 期限</span><b id="planDue">0</b></div>
         </div>
+        <div class="plan-cap-row">
+          <div><strong>1日の復習上限</strong><span>新出100語とは別枠。多すぎる復習を自動で繰り越します。</span></div>
+          <select id="reviewCap"><option value="30">30語</option><option value="50" selected>50語</option><option value="80">80語</option><option value="120">120語</option><option value="0">上限なし</option></select>
+        </div>
+        <div class="plan-backlog" id="planBacklog" style="display:none"></div>
         <button class="primary" id="planStartBtn">今日の学習を始める</button>
-        <div class="plan-note">「1日100語」は新しく触れる語数です。期限が来た復習は別枠で先に行い、その後に今日のSectionをNo.順で進めます。</div>
+        <div class="plan-note">「1日100語」は新しく触れる語数です。復習は答える速さ・誤答履歴・前回の間隔から個別に決め、上限を超えた分は翌日以降へ優先して繰り越します。</div>
         <details class="plan-settings">
           <summary>計画の開始日・19日分の予定を見る</summary>
           <div class="plan-start-row"><label for="planStartDate">Day 1 の開始日</label><input id="planStartDate" type="date"></div>
@@ -265,7 +274,7 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
             <div class="choice-grid" id="choiceGrid"></div>
           </div>
         </div>
-        <p class="session-note">「わかった」は、答えを見る前に意味が出たときだけ。3秒を過ぎると自動で誤答になります。</p>
+        <p class="session-note">「わかった」は、答えを見る前に意味が出たときだけ。3秒を過ぎると誤答。間違いは数問後に再テストし、翌日も確認します。</p>
       </div>
 
       <div id="summaryWrap" style="display:none">
@@ -294,13 +303,13 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
         <div class="stat"><div class="v" id="sAttempts">0</div><div class="k">総回答</div></div>
         <div class="stat"><div class="v" id="sAccuracy">—</div><div class="k">正答率</div></div>
         <div class="stat"><div class="v" id="sDue">0</div><div class="k">今すぐ復習</div></div>
-        <div class="stat"><div class="v" id="sFluent">0</div><div class="k">3秒以内正答語</div></div>
+        <div class="stat"><div class="v" id="sFluent">0</div><div class="k">1.5秒以内の即答語</div></div>
       </div>
 
-      <div class="section-title">復習段階</div>
+      <div class="section-title">次回復習まで</div>
       <div class="card bigcard" id="stageBars"></div>
 
-      <div class="stats-foot" id="statsFoot">「復習段階」は回答回数ではなく、1900語それぞれの現在位置を1語1回だけ数えます。</div>
+      <div class="stats-foot" id="statsFoot">固定の復習段階ではなく、1900語それぞれの「次回復習予定」を1語1回だけ数えます。</div>
 
       <div class="section-title">研究ベースの設計</div>
       <div class="card info">
@@ -308,11 +317,13 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
         <ul>
           <li><b>想起練習：</b>答えを先に見ず、英単語から意味を思い出す。</li>
           <li><b>即時フィードバック：</b>3秒後または自己回答直後に正答を表示する。</li>
-          <li><b>間隔反復：</b>正解が続くほど、10分 → 1日 → 3日 → 7日 → 14日 → 30日 → 60日 → 120日と復習間隔を延ばす。</li>
-          <li><b>誤答の遅延再テスト：</b>間違いはその場で連打せず、数問挟んで再び思い出す。</li>
+          <li><b>軽量適応復習：</b>固定周期ではなく、1.5秒以内の即答・1.5〜3秒の正答・誤答を分け、次回間隔を個別に調整する。</li>
+          <li><b>即答できた語は早く卒業：</b>初回から1.5秒以内で正答できた語は約4〜6日後へ。通常の正答はまず翌日、以後は正解が続くほど間隔を大きく延ばす。</li>
+          <li><b>誤答の遅延再テスト：</b>間違いは数問挟んで再び思い出し、同日内で何度も詰め込まず次の日にも確認する。</li>
+          <li><b>復習量の上限：</b>1日の復習語数を制限し、上限を超えた期限語は忘れやすさを推定して優先順位をつけ、翌日以降へ繰り越す。</li>
           <li><b>音声：</b>綴りだけでなく英語の音も同時に結びつける。音声は端末の読み上げ機能を使う。</li>
         </ul>
-        <div class="notice"><b>3秒について：</b>「3秒が記憶に最適」という意味ではありません。ここでは、試験や読解で使える程度に意味が素早く出るかを見るための流暢性基準として使っています。</div>
+        <div class="notice"><b>3秒について：</b>「3秒が記憶に最適」という意味ではありません。ここでは意味が素早く出るかを見る流暢性基準として使っています。復習アルゴリズムはFSRSの考え方を参考にした簡易方式で、正式なFSRS実装ではありません。</div>
         <p><b>参考：</b><br>
           Carpenter, Pan &amp; Butler (2022), <i>Nature Reviews Psychology</i> — spacing / retrieval practice<br>
           Murray (2025), <i>Nature Reviews Psychology</i> — 最適な間隔は保持期間などに依存<br>
@@ -349,20 +360,13 @@ const K = {
   daily:"target1900_daily_v1",
   plan:"target1900_plan_v1"
 };
-const INTERVALS = [
-  10*60*1000,
-  24*60*60*1000,
-  3*24*60*60*1000,
-  7*24*60*60*1000,
-  14*24*60*60*1000,
-  30*24*60*60*1000,
-  60*24*60*60*1000,
-  120*24*60*60*1000
-];
+const DAY = 24*60*60*1000;
+const SCHEDULER_VERSION = 3;
+const OLD_STAGE_DAYS = [10/(24*60),1,3,7,14,30,60,120];
 
 let WORDS = EMBEDDED_WORDS;
 let STATE = loadJSON(K.state, {});
-let SETTINGS = Object.assign({start:1,end:1900,size:100,autoAudio:true,speechRate:0.85}, loadJSON(K.settings, {}));
+let SETTINGS = Object.assign({start:1,end:1900,size:100,autoAudio:true,speechRate:0.85,reviewCap:50}, loadJSON(K.settings, {}));
 let DAILY = loadJSON(K.daily, {});
 let PLAN = Object.assign({startDate:todayKey(),dailyNew:100}, loadJSON(K.plan, {}));
 let sessionQueue=[], currentIndex=0, sessionCorrect=0, sessionWrong=0, sessionAnswered=0;
@@ -383,8 +387,12 @@ function escapeText(v){ return String(v ?? ""); }
 
 function normalizeState(no){
   const k=String(no);
-  if(!STATE[k]) STATE[k]={stage:-1,due:0,lapses:0,attempts:0,corrects:0,fluent:0,lastSeen:0,lastResult:"",lastLatency:null};
-  return STATE[k];
+  if(!STATE[k]) STATE[k]={stage:-1,due:0,lapses:0,attempts:0,corrects:0,fluent:0,lastSeen:0,lastResult:"",lastLatency:null,stabilityDays:0,lastIntervalDays:0,successStreak:0,schedulerVersion:SCHEDULER_VERSION};
+  const s=STATE[k];
+  if(!Number.isFinite(s.stabilityDays)) s.stabilityDays=0;
+  if(!Number.isFinite(s.lastIntervalDays)) s.lastIntervalDays=0;
+  if(!Number.isFinite(s.successStreak)) s.successStreak=0;
+  return s;
 }
 function persistAll(){
   saveJSON(K.state,STATE); saveJSON(K.settings,SETTINGS); saveJSON(K.daily,DAILY); saveJSON(K.plan,PLAN);
@@ -415,42 +423,99 @@ function getPlanInfo(dayOverride=null){
 }
 function migrateState(){
   let changed=false;
+  const now=Date.now();
   for(const k of Object.keys(STATE)){
     const st=STATE[k];
     if(!st || !(st.attempts>0)) continue;
-    // Older versions could leave attempted words at stage -1, or keep a high
-    // stage after a lapse even though the next review was actually 10 minutes.
-    if((st.stage??-1)<0 || st.lastResult==="wrong" || st.lastResult==="timeout"){
-      if(st.stage!==0){ st.stage=0; changed=true; }
+    if(st.schedulerVersion===SCHEDULER_VERSION && Number.isFinite(st.stabilityDays)) continue;
+    const oldStage=clamp(Number.isFinite(st.stage)?st.stage:0,0,OLD_STAGE_DAYS.length-1);
+    const oldDays=OLD_STAGE_DAYS[oldStage]||1;
+    const lastSeen=Number.isFinite(st.lastSeen)&&st.lastSeen>0?st.lastSeen:now;
+    const wasWrong=st.lastResult==="wrong"||st.lastResult==="timeout";
+    if(wasWrong){
+      st.stabilityDays=1;
+      st.lastIntervalDays=1;
+      st.successStreak=0;
+      const target=lastSeen+DAY;
+      st.due=target>now?target:now-1000;
+    }else{
+      // v2の「最初の正解→10分後」を廃止。旧10分段階だけ新方式へ救済移行する。
+      let base=oldDays;
+      if(oldStage===0) base=(st.lastLatency??3000)<=1500?5:1;
+      st.stabilityDays=Math.max(1,base);
+      st.lastIntervalDays=st.stabilityDays;
+      st.successStreak=Math.max(1,Number(st.corrects)||1);
+      if(oldStage===0 || !Number.isFinite(st.due) || st.due<=0) st.due=lastSeen+st.stabilityDays*DAY;
     }
+    st.schedulerVersion=SCHEDULER_VERSION;
+    changed=true;
   }
   if(changed) saveJSON(K.state,STATE);
 }
-function recordDaily(ok){
+function recordDaily(ok,word){
   const key=todayKey();
-  if(!DAILY[key]) DAILY[key]={attempts:0,corrects:0,wrong:0};
-  DAILY[key].attempts++;
-  if(ok) DAILY[key].corrects++; else DAILY[key].wrong++;
+  if(!DAILY[key]) DAILY[key]={attempts:0,corrects:0,wrong:0,planReviews:0};
+  const d=DAILY[key];
+  d.attempts=(d.attempts||0)+1;
+  if(ok) d.corrects=(d.corrects||0)+1; else d.wrong=(d.wrong||0)+1;
+  if(word?._planReview) d.planReviews=(d.planReviews||0)+1;
+}
+function jitterFactor(wordNo,seed){
+  let x=(Math.imul(Number(wordNo)||1,2654435761)+Math.imul(Number(seed)||1,1013904223))>>>0;
+  x^=x>>>16; x=Math.imul(x,2246822519)>>>0; x^=x>>>13; x=Math.imul(x,3266489917)>>>0; x^=x>>>16;
+  return 0.8+(x/4294967295)*0.4;
+}
+function chooseBaseIntervalDays(s,latency,recovery){
+  if(recovery) return 1;
+  const prev=Math.max(0,Number(s.stabilityDays)||0);
+  const fast=latency<=1500;
+  if(fast){
+    if(prev<1.5) return 5;
+    if(prev<8) return 14;
+    if(prev<25) return 35;
+    if(prev<60) return 90;
+    return Math.min(180,prev*1.8);
+  }
+  if(prev<0.5) return 1;
+  if(prev<2) return 4;
+  if(prev<8) return 12;
+  if(prev<22) return 30;
+  if(prev<55) return 75;
+  return Math.min(150,prev*1.6);
+}
+function scheduleAdaptiveDue(s,word,baseDays){
+  let days=baseDays;
+  if(baseDays>1.5) days=baseDays*jitterFactor(word.no,(s.corrects||0)+(s.attempts||0)+1);
+  // 誤答が多い語は少しだけ短めにする。ただし過剰反復は避ける。
+  const lapsePenalty=Math.max(0.82,1-Math.min(0.18,(s.lapses||0)*0.02));
+  if(baseDays>1.5) days*=lapsePenalty;
+  days=Math.max(1,Math.round(days*10)/10);
+  s.stabilityDays=baseDays;
+  s.lastIntervalDays=days;
+  s.due=Date.now()+days*DAY;
+  s.schedulerVersion=SCHEDULER_VERSION;
+  return days;
 }
 function recordCorrect(word,latency){
   const s=normalizeState(word.no);
+  const recovery=!!word._retry || s.lastResult==="wrong" || s.lastResult==="timeout";
+  const baseDays=chooseBaseIntervalDays(s,latency,recovery);
   s.attempts++; s.corrects++; s.lastSeen=Date.now(); s.lastResult="correct"; s.lastLatency=Math.round(latency);
-  if(latency<=3000) s.fluent=(s.fluent||0)+1;
-  // A same-session retry is recovery practice, not promotion to the next day.
-  // Keep it at the 10-minute step. A later successful review advances it.
-  if(word._retry) s.stage=0;
-  else s.stage=Math.min(INTERVALS.length-1,Math.max(0,(s.stage??-1)+1));
-  s.due=Date.now()+INTERVALS[s.stage];
-  recordDaily(true); sessionCorrect++; sessionAnswered++;
+  if(latency<=1500) s.fluent=(s.fluent||0)+1;
+  s.successStreak=recovery?1:(s.successStreak||0)+1;
+  scheduleAdaptiveDue(s,word,baseDays);
+  recordDaily(true,word); sessionCorrect++; sessionAnswered++;
   persistAll();
 }
 function recordWrong(word,latency,reason){
   const s=normalizeState(word.no);
   s.attempts++; s.lapses=(s.lapses||0)+1; s.lastSeen=Date.now(); s.lastResult=reason||"wrong"; s.lastLatency=Math.round(latency||3000);
-  // A lapse always returns to the 10-minute relearning step.
-  s.stage=0;
-  s.due=Date.now()+INTERVALS[0];
-  recordDaily(false); sessionWrong++; sessionAnswered++;
+  s.successStreak=0;
+  s.stabilityDays=1;
+  s.lastIntervalDays=1;
+  s.due=Date.now()+DAY;
+  s.schedulerVersion=SCHEDULER_VERSION;
+  recordDaily(false,word); sessionWrong++; sessionAnswered++;
   persistAll();
   scheduleRetry(word);
 }
@@ -459,7 +524,7 @@ function scheduleRetry(word){
   retryCount[k]=(retryCount[k]||0)+1;
   if(retryCount[k]>2) return;
   const insertAt=Math.min(currentIndex+6,sessionQueue.length);
-  sessionQueue.splice(insertAt,0,Object.assign({},word,{_retry:true}));
+  sessionQueue.splice(insertAt,0,Object.assign({},word,{_retry:true,_planReview:false}));
 }
 function shuffle(a){
   for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
@@ -472,6 +537,7 @@ function applySettingsToUI(){
   $("sessionSize").value=String(SETTINGS.size);
   $("autoAudio").checked=!!SETTINGS.autoAudio;
   $("speechRate").value=String(SETTINGS.speechRate);
+  $("reviewCap").value=String(Number.isFinite(Number(SETTINGS.reviewCap))?SETTINGS.reviewCap:50);
 }
 function readSettings(){
   if(!WORDS.length) return;
@@ -483,6 +549,8 @@ function readSettings(){
   SETTINGS.size=parseInt($("sessionSize").value,10)||100;
   SETTINGS.autoAudio=$("autoAudio").checked;
   SETTINGS.speechRate=parseFloat($("speechRate").value)||0.85;
+  SETTINGS.reviewCap=parseInt($("reviewCap").value,10);
+  if(!Number.isFinite(SETTINGS.reviewCap)) SETTINGS.reviewCap=50;
   saveJSON(K.settings,SETTINGS);
 }
 
@@ -498,14 +566,36 @@ function setMeaning(el,meaning){
     const r=document.createElement("span"); r.className="meaning-rest"; r.textContent=rest; el.appendChild(r);
   }
 }
+function getDailyReviewCap(){
+  const v=Number(SETTINGS.reviewCap);
+  return v===0?Infinity:Math.max(0,Number.isFinite(v)?v:50);
+}
+function reviewPriority(word,now=Date.now()){
+  const s=STATE[String(word.no)]||{};
+  const overdueDays=Math.max(0,(now-(s.due||now))/DAY);
+  const lapse=Math.min(8,(s.lapses||0)*0.8);
+  const slow=Number.isFinite(s.lastLatency)?clamp((s.lastLatency-1200)/1800,0,1.2)*2:1;
+  const fragile=2/Math.sqrt(Math.max(0.5,Number(s.stabilityDays)||1));
+  const wrongBoost=(s.lastResult==="wrong"||s.lastResult==="timeout")?6:0;
+  return Math.log1p(overdueDays)*4 + overdueDays*0.15 + lapse + slow + fragile + wrongBoost;
+}
+function prioritizeDue(words,limit=Infinity){
+  const now=Date.now();
+  const arr=words.slice().sort((a,b)=>reviewPriority(b,now)-reviewPriority(a,now) || (STATE[String(a.no)]?.due||0)-(STATE[String(b.no)]?.due||0));
+  return Number.isFinite(limit)?arr.slice(0,Math.max(0,limit)):arr;
+}
 function planWordStats(info){
   const range=WORDS.filter(w=>w.no>=info.start&&w.no<=info.end);
   const attempted=range.filter(w=>(STATE[String(w.no)]?.attempts||0)>0).length;
   const remaining=range.length-attempted;
   const now=Date.now();
-  // Review only words that have already been introduced up through today's plan range.
-  const due=WORDS.filter(w=>w.no<=info.end && (STATE[String(w.no)]?.attempts||0)>0 && (STATE[String(w.no)]?.due||Infinity)<=now).length;
-  return {attempted,remaining,due,total:range.length};
+  const introducedEnd=info.after?WORDS.length:info.end;
+  const dueTotal=WORDS.filter(w=>w.no<=introducedEnd && (STATE[String(w.no)]?.attempts||0)>0 && (STATE[String(w.no)]?.due||Infinity)<=now).length;
+  const cap=getDailyReviewCap();
+  const reviewedToday=(DAILY[todayKey()]?.planReviews||0);
+  const capRemaining=Number.isFinite(cap)?Math.max(0,cap-reviewedToday):Infinity;
+  const duePlanned=Number.isFinite(capRemaining)?Math.min(dueTotal,capRemaining):dueTotal;
+  return {attempted,remaining,dueTotal,duePlanned,total:range.length,cap,reviewedToday,capRemaining};
 }
 function renderPlan(){
   if(!WORDS.length) return;
@@ -522,25 +612,37 @@ function renderPlan(){
   $("planNewProgress").textContent=`${st.attempted} / ${st.total}`;
   $("planProgressBar").style.width=`${st.total?st.attempted/st.total*100:0}%`;
   $("planRemaining").textContent=info.after?0:st.remaining;
-  $("planDue").textContent=st.due;
+  $("planDue").textContent=(Number.isFinite(st.cap)&&st.dueTotal>st.duePlanned)?`${st.duePlanned} / ${st.dueTotal}`:st.dueTotal;
   $("planComplete").style.display=info.after?"block":"none";
+  const backlog=$("planBacklog");
+  if(st.dueTotal>st.duePlanned){
+    backlog.style.display="block";
+    backlog.textContent=st.capRemaining<=0
+      ?`今日の復習上限 ${st.cap}語に到達しました。期限超過の残り ${st.dueTotal}語は明日以降に優先して回します。`
+      :`期限が来ている語は ${st.dueTotal}語あります。今日は残り上限 ${st.capRemaining}語まで出題し、超過分は翌日以降へ繰り越します。`;
+  }else backlog.style.display="none";
   const btn=$("planStartBtn");
   if(info.before){ btn.textContent="Day 1 を先に始める"; }
-  else if(info.after){ btn.textContent=st.due?`期限復習 ${st.due}語を始める`:"復習する語はありません"; }
-  else if(st.remaining===0 && st.due===0){ btn.textContent="今日の新出100語は完了"; }
-  else { btn.textContent=`今日の学習を始める${st.due?`（復習${st.due} + 新出${st.remaining}）`:`（新出${st.remaining}）`}`; }
-  btn.disabled=info.after?st.due===0:(st.remaining===0&&st.due===0);
+  else if(info.after){
+    if(st.duePlanned>0) btn.textContent=`期限復習 ${st.duePlanned}語を始める`;
+    else if(st.dueTotal>0) btn.textContent="今日の復習上限に到達";
+    else btn.textContent="復習する語はありません";
+  }
+  else if(st.remaining===0 && st.duePlanned===0){ btn.textContent=st.dueTotal>0?"今日の復習上限に到達":"今日の新出100語は完了"; }
+  else { btn.textContent=`今日の学習を始める${st.duePlanned?`（復習${st.duePlanned} + 新出${st.remaining}）`:`（新出${st.remaining}）`}`; }
+  btn.disabled=info.after?(st.duePlanned===0):(st.remaining===0&&st.duePlanned===0);
   btn.style.opacity=btn.disabled?".45":"1";
 
   const host=$("planSchedule");
   host.innerHTML="";
   for(let d=1;d<=info.totalDays;d++){
     const x=getPlanInfo(d);
-    const xs=planWordStats(x);
+    const range=WORDS.filter(w=>w.no>=x.start&&w.no<=x.end);
+    const remaining=range.filter(w=>!(STATE[String(w.no)]?.attempts>0)).length;
     const sec=WORDS.find(w=>w.no===x.start)?.section||d;
     const row=document.createElement("div");
-    row.className=`plan-dayrow${d===info.day&&!info.before&&!info.after?" today":""}${xs.remaining===0?" done":""}`;
-    row.innerHTML=`<div class="day">Day ${d}</div><div class="range">Section ${sec}<br>No.${x.start}–${x.end}</div><div class="date">${formatDateShort(x.date)}${xs.remaining===0?" ✓":""}</div>`;
+    row.className=`plan-dayrow${d===info.day&&!info.before&&!info.after?" today":""}${remaining===0?" done":""}`;
+    row.innerHTML=`<div class="day">Day ${d}</div><div class="range">Section ${sec}<br>No.${x.start}–${x.end}</div><div class="date">${formatDateShort(x.date)}${remaining===0?" ✓":""}</div>`;
     host.appendChild(row);
   }
 }
@@ -583,9 +685,12 @@ function buildSession(mode="normal"){
   if(mode==="plan"){
     const info=getPlanInfo();
     const planEnd=info.after?WORDS.length:info.end;
-    const due=WORDS.filter(w=>w.no<=planEnd && (STATE[String(w.no)]?.attempts||0)>0 && (STATE[String(w.no)]?.due||Infinity)<=now)
-      .sort((a,b)=>(STATE[String(a.no)]?.due||0)-(STATE[String(b.no)]?.due||0));
-    // New words stay in book order. Due reviews come first and do not consume the 100-new-word quota.
+    const dueAll=WORDS.filter(w=>w.no<=planEnd && (STATE[String(w.no)]?.attempts||0)>0 && (STATE[String(w.no)]?.due||Infinity)<=now);
+    const cap=getDailyReviewCap();
+    const reviewedToday=(DAILY[todayKey()]?.planReviews||0);
+    const capRemaining=Number.isFinite(cap)?Math.max(0,cap-reviewedToday):Infinity;
+    const due=prioritizeDue(dueAll,capRemaining).map(w=>Object.assign({},w,{_planReview:true}));
+    // 新出100語は維持。復習上限には含めない。
     const newWords=info.after?[]:WORDS.filter(w=>w.no>=info.start&&w.no<=info.end && !(STATE[String(w.no)]?.attempts>0)).sort((a,b)=>a.no-b.no);
     const seen=new Set();
     q=due.concat(newWords).filter(w=>{if(seen.has(w.no)) return false; seen.add(w.no); return true;});
@@ -597,10 +702,10 @@ function buildSession(mode="normal"){
     const due=inRange.filter(w=>{
       const s=STATE[String(w.no)];
       return s && s.attempts>0 && s.due<=now;
-    }).sort((a,b)=>(STATE[String(a.no)]?.due||0)-(STATE[String(b.no)]?.due||0));
-    shuffle(due);
+    });
+    const prioritized=prioritizeDue(due);
     const unseen=inRange.filter(w=>!STATE[String(w.no)] || !(STATE[String(w.no)].attempts>0)).sort((a,b)=>a.no-b.no);
-    q=due.concat(unseen).slice(0,SETTINGS.size);
+    q=prioritized.concat(unseen).slice(0,SETTINGS.size);
     if(q.length<SETTINGS.size){
       const ids=new Set(q.map(w=>w.no));
       const extra=inRange.filter(w=>!ids.has(w.no) && STATE[String(w.no)]?.attempts>0)
@@ -610,7 +715,14 @@ function buildSession(mode="normal"){
   }
   sessionQueue=q.map(w=>Object.assign({},w));
   currentIndex=0; sessionCorrect=0; sessionWrong=0; sessionAnswered=0; retryCount={};
-  if(!sessionQueue.length){ toast(mode==="wrong"?"誤答履歴がありません":mode==="plan"?"今日の新出と期限復習は完了しています":"出題できる単語がありません"); return false; }
+  if(!sessionQueue.length){
+    let msg=mode==="wrong"?"誤答履歴がありません":mode==="plan"?"今日の新出と期限復習は完了しています":"出題できる単語がありません";
+    if(mode==="plan"){
+      const st=planWordStats(getPlanInfo());
+      if(st.dueTotal>0 && st.capRemaining<=0) msg="今日の復習上限に到達しました。残りは明日以降へ繰り越します";
+    }
+    toast(msg); return false;
+  }
   return true;
 }
 
@@ -755,25 +867,30 @@ function renderStats(){
   }
   const now=Date.now();
   let attempts=0,corrects=0,fluentWords=0,due=0,learned=0;
-  const stageCount=Array(INTERVALS.length+1).fill(0); // 0 unseen, 1..8 current stages
+  const labels=["未学習","復習期限","1日以内","2〜7日","8〜21日","22〜60日","61日以上"];
+  const buckets=Array(labels.length).fill(0);
   for(const w of WORDS){
     const st=STATE[String(w.no)];
-    if(!st||!(st.attempts>0)){ stageCount[0]++; continue; }
+    if(!st||!(st.attempts>0)){ buckets[0]++; continue; }
     learned++;
     attempts+=st.attempts||0; corrects+=st.corrects||0;
-    if(st.lastResult==="correct" && (st.lastLatency??Infinity)<=3000) fluentWords++;
-    if((st.due||Infinity)<=now) due++;
-    const stage=Math.min(INTERVALS.length-1,Math.max(0,st.stage??0));
-    stageCount[stage+1]++;
+    if(st.lastResult==="correct" && (st.lastLatency??Infinity)<=1500) fluentWords++;
+    const dueAt=st.due||now;
+    if(dueAt<=now){ due++; buckets[1]++; continue; }
+    const days=(dueAt-now)/DAY;
+    if(days<=1.5) buckets[2]++;
+    else if(days<=7) buckets[3]++;
+    else if(days<=21) buckets[4]++;
+    else if(days<=60) buckets[5]++;
+    else buckets[6]++;
   }
   $("sAttempts").textContent=attempts;
   $("sAccuracy").textContent=attempts?`${Math.round(corrects/attempts*100)}%`:"—";
   $("sDue").textContent=due;
   $("sFluent").textContent=fluentWords;
-  const labels=["未学習","10分","1日","3日","7日","14日","30日","60日","120日"];
-  const max=Math.max(1,...stageCount);
-  $("stageBars").innerHTML=stageCount.map((v,i)=>`<div class="bar-row"><div class="bar-head"><span>${labels[i]}</span><b>${v}</b></div><div class="bar-bg"><div class="bar-v" style="width:${v/max*100}%"></div></div></div>`).join("");
-  $("statsFoot").textContent=`1900語の内訳：未学習 ${stageCount[0]}語 / 学習済み ${learned}語。各単語は現在の段階に1回だけ数えています。誤答は10分段階に戻ります。`;
+  const max=Math.max(1,...buckets);
+  $("stageBars").innerHTML=buckets.map((v,i)=>`<div class="bar-row"><div class="bar-head"><span>${labels[i]}</span><b>${v}</b></div><div class="bar-bg"><div class="bar-v" style="width:${v/max*100}%"></div></div></div>`).join("");
+  $("statsFoot").textContent=`1900語の内訳：未学習 ${buckets[0]}語 / 学習済み ${learned}語。固定段階ではなく、各語の次回復習予定を数えています。即答できる語ほど間隔を大きく、誤答語ほど短くします。`;
 }
 
 function refreshAll(){ refreshHome(); renderMistakes(); renderStats(); }
@@ -801,7 +918,7 @@ $("summaryWrongBtn").onclick=()=>startSession("wrong");
 $("summaryHomeBtn").onclick=()=>switchView("homeView");
 $("reviewWrongBtn").onclick=()=>startSession("wrong");
 $("mistakeSearch").addEventListener("input",renderMistakes);
-["rangeStart","rangeEnd","sessionSize","autoAudio","speechRate"].forEach(id=>{
+["rangeStart","rangeEnd","sessionSize","autoAudio","speechRate","reviewCap"].forEach(id=>{
   $(id).addEventListener("change",()=>{readSettings();refreshHome()});
 });
 $("exportBtn").onclick=()=>{
