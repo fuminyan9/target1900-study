@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f8fb">
-<title>Target 1900 | 3秒音声リコール + 適応復習</title>
+<title>Target 1900 | Part 1定着 + 3秒音声リコール</title>
 <style>
 :root{
   --bg:#f6f7fb;--panel:#fff;--text:#15171c;--muted:#6e7480;--line:#e7e9ef;
@@ -94,6 +94,29 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
 .nav button{border:0;background:transparent;color:#767c87;border-radius:13px;min-height:54px;font-size:11px;font-weight:800}
 .nav button .ico{display:block;font-size:20px;line-height:23px;margin-bottom:1px}
 .nav button.active{background:#e9eefc;color:var(--accent)}
+
+/* Part 1 focus */
+.focus-card{padding:18px}
+.focus-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.focus-kicker{display:inline-flex;align-items:center;font-size:11px;font-weight:900;color:#7a4b00;background:#fff2d9;border-radius:999px;padding:5px 9px;margin-bottom:7px}
+.focus-card h2{font-size:21px;line-height:1.35;letter-spacing:-.035em;margin:0}
+.focus-desc{font-size:12px;color:var(--muted);line-height:1.65;margin:7px 0 0}
+.focus-score{flex:none;min-width:70px;text-align:center;border-radius:14px;background:#f2f4f8;padding:9px 8px}
+.focus-score b{display:block;font-size:21px}.focus-score small{display:block;font-size:9px;color:var(--muted);font-weight:800;margin-top:1px}
+.focus-progress{height:9px;background:#e8eaf0;border-radius:999px;overflow:hidden;margin:16px 0 10px}
+.focus-progress>div{height:100%;background:var(--ok);border-radius:999px;transition:width .25s ease}
+.focus-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0 12px}
+.focus-metric{border:1px solid var(--line);border-radius:14px;padding:10px 11px;background:#fafbfc}
+.focus-metric span{display:block;color:var(--muted);font-size:10px;font-weight:800}.focus-metric b{display:block;font-size:20px;margin-top:1px}
+.focus-note{font-size:12px;line-height:1.6;border-radius:14px;padding:11px 12px;background:#f5f7fb;margin:10px 0 12px}
+.focus-note.book{background:#fff8e8;color:#664712}.focus-note.pass{background:var(--okbg);color:var(--ok);font-weight:800}
+.focus-actions{display:grid;gap:8px}.focus-actions.two{grid-template-columns:1fr 1fr}
+.focus-actions .secondary,.focus-actions .primary,.focus-actions .good{width:100%;min-height:50px;padding:11px 12px;font-size:13px}
+.focus-pass{margin-top:11px;border-top:1px solid var(--line);padding-top:11px;font-size:11px;color:var(--muted);line-height:1.55}
+.focus-pass strong{color:var(--text)}
+.focus-mini{font-size:10px;color:var(--muted);line-height:1.55;margin-top:9px}
+@media(max-width:420px){.focus-actions.two{grid-template-columns:1fr}.focus-score{min-width:62px}.focus-card h2{font-size:19px}}
+
 /* Study */
 .study-top{display:flex;align-items:center;gap:12px;margin:5px 0 12px}
 .progress-track{height:7px;background:#e4e7ed;border-radius:20px;overflow:hidden;flex:1}
@@ -170,7 +193,7 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
 <body>
 <div class="app">
   <header class="topbar">
-    <div class="brand">Target 1900 <small>3秒音声リコール · 軽量適応復習 · 1日100語</small></div>
+    <div class="brand">Target 1900 <small>Part 1定着 · 3秒音声リコール · 適応復習</small></div>
     <button class="iconbtn" id="quickSpeak" aria-label="音声テスト">🔊</button>
   </header>
 
@@ -194,8 +217,48 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
         <div class="stat"><div class="v" id="accStat">—</div><div class="k">累計正答率</div></div>
       </div>
 
-      <div class="section-title">1日100語・19日学習計画</div>
-      <div class="card plan-card">
+      <div class="section-title">Part 1（No.1–800）定着モード</div>
+      <div class="card focus-card" id="part1FocusCard">
+        <div class="focus-top">
+          <div>
+            <span class="focus-kicker" id="focusPhaseBadge">INPUT</span>
+            <h2 id="focusTitle">まず500〜800を単語帳で一度覚える</h2>
+            <p class="focus-desc" id="focusDescription">今は問題演習を増やすより、単語帳で意味と音を一度入れる期間です。</p>
+          </div>
+          <div class="focus-score"><b id="part1CurrentRate">—</b><small>直近3秒正答</small></div>
+        </div>
+        <div class="focus-progress"><div id="part1ProgressBar" style="width:0%"></div></div>
+        <div class="focus-grid">
+          <div class="focus-metric"><span>安定</span><b id="part1Stable">0</b></div>
+          <div class="focus-metric"><span>要復習</span><b id="part1Review">0</b></div>
+          <div class="focus-metric"><span>苦手</span><b id="part1Weak">0</b></div>
+          <div class="focus-metric"><span>未確認</span><b id="part1Unchecked">800</b></div>
+        </div>
+        <div class="focus-note book" id="focusCurrentNote"></div>
+
+        <div class="focus-actions" id="bookPhaseActions">
+          <button class="primary" id="part1ReviewOldBtn">1〜499の期限復習だけする</button>
+          <button class="secondary" id="part1BookDoneBtn">500〜800を単語帳で覚え終わった</button>
+        </div>
+
+        <div id="consolidateActions" style="display:none">
+          <div class="focus-actions">
+            <button class="primary" id="part1AssessBtn">500〜800の未確認を100語チェック</button>
+          </div>
+          <div class="focus-actions two" style="margin-top:8px">
+            <button class="secondary" id="part1WeakBtn">Part 1 苦手100語</button>
+            <button class="good" id="part1CheckBtn">ランダム100語チェック</button>
+          </div>
+          <div class="focus-actions" style="margin-top:8px">
+            <button class="secondary" id="part1BackToBookBtn">まだ単語帳インプット期間に戻す</button>
+          </div>
+        </div>
+        <div class="focus-pass" id="part1PassStatus"></div>
+        <div class="focus-mini">安定＝直近正解・連続2回以上正解・記憶安定度4日以上。苦手＝直近誤答、または誤答が重なり安定度が低い語。合格判定は、800語すべて確認後のランダム100語で90%以上を別日に2回。</div>
+      </div>
+
+      <div class="section-title" id="regularPlanSection">1日100語・19日学習計画</div>
+      <div class="card plan-card" id="regularPlanCard">
         <div id="planComplete" class="plan-complete" style="display:none">19セクションの新出学習が完了しています。以後は期限復習を中心に進めます。</div>
         <div class="plan-top">
           <div>
@@ -321,6 +384,7 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
           <li><b>即答できた語は早く卒業：</b>初回から1.5秒以内で正答できた語は約4〜6日後へ。通常の正答はまず翌日、以後は正解が続くほど間隔を大きく延ばす。</li>
           <li><b>誤答の遅延再テスト：</b>間違いは数問挟んで再び思い出し、同日内で何度も詰め込まず次の日にも確認する。</li>
           <li><b>復習量の上限：</b>1日の復習語数を制限し、上限を超えた期限語は忘れやすさを推定して優先順位をつけ、翌日以降へ繰り越す。</li>
+          <li><b>インプット→確認：</b>Part 1後半は、まず単語帳で一度意味を入れてからアプリで想起確認する。初見語を大量のテストだけで押し切らない。</li>
           <li><b>音声：</b>綴りだけでなく英語の音も同時に結びつける。音声は端末の読み上げ機能を使う。</li>
         </ul>
         <div class="notice"><b>3秒について：</b>「3秒が記憶に最適」という意味ではありません。ここでは意味が素早く出るかを見る流暢性基準として使っています。復習アルゴリズムはFSRSの考え方を参考にした簡易方式で、正式なFSRS実装ではありません。</div>
@@ -358,7 +422,8 @@ const K = {
   state:"target1900_state_v2",
   settings:"target1900_settings_v1",
   daily:"target1900_daily_v1",
-  plan:"target1900_plan_v1"
+  plan:"target1900_plan_v1",
+  focus:"target1900_focus_v1"
 };
 const DAY = 24*60*60*1000;
 const SCHEDULER_VERSION = 3;
@@ -369,7 +434,10 @@ let STATE = loadJSON(K.state, {});
 let SETTINGS = Object.assign({start:1,end:1900,size:100,autoAudio:true,speechRate:0.85,reviewCap:50}, loadJSON(K.settings, {}));
 let DAILY = loadJSON(K.daily, {});
 let PLAN = Object.assign({startDate:todayKey(),dailyNew:100}, loadJSON(K.plan, {}));
-let sessionQueue=[], currentIndex=0, sessionCorrect=0, sessionWrong=0, sessionAnswered=0;
+const DEFAULT_FOCUS={phase:"book",part1End:800,bookStart:500,bookEnd:800,checkHistory:[]};
+let FOCUS = Object.assign({},DEFAULT_FOCUS,loadJSON(K.focus, {}));
+if(!Array.isArray(FOCUS.checkHistory)) FOCUS.checkHistory=[];
+let sessionQueue=[], currentIndex=0, sessionCorrect=0, sessionWrong=0, sessionAnswered=0, currentSessionMode="normal";
 let retryCount={};
 let currentWord=null, currentPromptStart=0, timerDeadline=0, timerRemaining=3000, timerRAF=0, timerRunning=false, promptResolved=false;
 let voices=[];
@@ -395,7 +463,7 @@ function normalizeState(no){
   return s;
 }
 function persistAll(){
-  saveJSON(K.state,STATE); saveJSON(K.settings,SETTINGS); saveJSON(K.daily,DAILY); saveJSON(K.plan,PLAN);
+  saveJSON(K.state,STATE); saveJSON(K.settings,SETTINGS); saveJSON(K.daily,DAILY); saveJSON(K.plan,PLAN); saveJSON(K.focus,FOCUS);
 }
 function localDateFromKey(key){
   const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(key||""));
@@ -520,6 +588,7 @@ function recordWrong(word,latency,reason){
   scheduleRetry(word);
 }
 function scheduleRetry(word){
+  if(word?._noRetry) return;
   const k=String(word.no);
   retryCount[k]=(retryCount[k]||0)+1;
   if(retryCount[k]>2) return;
@@ -566,6 +635,92 @@ function setMeaning(el,meaning){
     const r=document.createElement("span"); r.className="meaning-rest"; r.textContent=rest; el.appendChild(r);
   }
 }
+function part1Classify(word){
+  const s=STATE[String(word.no)];
+  if(!s || !(s.attempts>0)) return "unchecked";
+  const weak=(s.lastResult!=="correct") || (((s.lapses||0)>=3) && ((s.successStreak||0)<2)) || (((s.stabilityDays||0)<=1) && ((s.lapses||0)>=2));
+  if(weak) return "weak";
+  const stable=s.lastResult==="correct" && (s.successStreak||0)>=2 && (s.stabilityDays||0)>=4;
+  return stable?"stable":"review";
+}
+function part1WeakScore(word,now=Date.now()){
+  const s=STATE[String(word.no)]||{};
+  if(!(s.attempts>0)) return -1e9;
+  const cls=part1Classify(word);
+  const dueBoost=(s.due||Infinity)<=now?18:0;
+  const wrongBoost=s.lastResult!=="correct"?35:0;
+  const lapses=Math.min(20,(s.lapses||0)*3.2);
+  const fragile=12/Math.sqrt(Math.max(.5,Number(s.stabilityDays)||1));
+  const slow=Number.isFinite(s.lastLatency)?clamp((s.lastLatency-1200)/1800,0,1)*5:3;
+  const classBoost=cls==="weak"?24:cls==="review"?10:0;
+  return dueBoost+wrongBoost+lapses+fragile+slow+classBoost;
+}
+function getPart1Stats(){
+  const end=Math.min(800,WORDS.length);
+  const arr=WORDS.filter(w=>w.no>=1&&w.no<=end);
+  const out={stable:0,review:0,weak:0,unchecked:0,attempted:0,currentCorrect:0,total:arr.length,bookUnseen:[],dueOld:0};
+  const now=Date.now();
+  for(const w of arr){
+    const cls=part1Classify(w); out[cls]++;
+    const s=STATE[String(w.no)];
+    if(s?.attempts>0){out.attempted++; if(s.lastResult==="correct") out.currentCorrect++;}
+    if(w.no>=Number(FOCUS.bookStart||500)&&w.no<=Number(FOCUS.bookEnd||800) && !(s?.attempts>0)) out.bookUnseen.push(w);
+    if(w.no<=499 && s?.attempts>0 && (s.due||Infinity)<=now) out.dueOld++;
+  }
+  out.currentRate=out.attempted?Math.round(out.currentCorrect/out.attempted*100):null;
+  out.stableRate=out.total?Math.round(out.stable/out.total*100):0;
+  const passDates=new Set((FOCUS.checkHistory||[]).filter(x=>x&&x.count>=100&&x.accuracy>=90).map(x=>x.date));
+  out.passDays=passDates.size;
+  return out;
+}
+function renderPart1Focus(){
+  if(!WORDS.length) return;
+  const st=getPart1Stats();
+  $("part1Stable").textContent=st.stable;
+  $("part1Review").textContent=st.review;
+  $("part1Weak").textContent=st.weak;
+  $("part1Unchecked").textContent=st.unchecked;
+  $("part1CurrentRate").textContent=st.currentRate===null?"—":`${st.currentRate}%`;
+  $("part1ProgressBar").style.width=`${st.total?st.stable/st.total*100:0}%`;
+
+  const phase=FOCUS.phase||"book";
+  const isBook=phase==="book";
+  $("bookPhaseActions").style.display=isBook?"grid":"none";
+  $("consolidateActions").style.display=isBook?"none":"block";
+  $("regularPlanSection").style.display=phase==="normal"?"block":"none";
+  $("regularPlanCard").style.display=phase==="normal"?"block":"none";
+
+  const unseen=st.bookUnseen;
+  const first=unseen.length?unseen[0].no:null, last=unseen.length?unseen[unseen.length-1].no:null;
+  if(isBook){
+    $("focusPhaseBadge").textContent="INPUT";
+    $("focusTitle").textContent=unseen.length?`まず No.${first}〜${last} を単語帳で一度覚える`:"500〜800の単語帳インプットは完了候補";
+    $("focusDescription").textContent="この期間は500〜800をアプリの問題に出しません。単語帳で意味・音を一度入れ、1〜499は期限が来た語だけ維持します。";
+    $("focusCurrentNote").className="focus-note book";
+    $("focusCurrentNote").textContent=unseen.length?`単語帳で先に覚える未確認は ${unseen.length}語。アプリでは今は出題停止中です。1〜499の期限復習は現在 ${st.dueOld}語です。`:`500〜800はすでにアプリ上でも一度以上確認されています。定着モードへ進めます。`;
+    $("part1ReviewOldBtn").textContent=st.dueOld?`1〜499の期限復習 ${Math.min(st.dueOld,50)}語をする`:"1〜499の期限復習は今ありません";
+    $("part1BookDoneBtn").textContent=unseen.length?`No.${first}〜${last} を単語帳で覚え終わった`:"単語帳インプット完了 → 定着確認へ";
+    $("part1ReviewOldBtn").disabled=st.dueOld===0; $("part1ReviewOldBtn").style.opacity=st.dueOld===0?".45":"1";
+  }else{
+    $("focusPhaseBadge").textContent=phase==="passed"?"PART 1 PASS":"FIX";
+    $("focusTitle").textContent=phase==="passed"?"Part 1（1〜800）合格ライン到達":"Part 1（1〜800）を固める";
+    $("focusDescription").textContent="単語帳で一度入れた語を、3秒想起で確認。未確認→苦手→ランダム確認の順に進めます。";
+    $("focusCurrentNote").className=phase==="passed"?"focus-note pass":"focus-note";
+    $("focusCurrentNote").textContent=st.unchecked?`まず未確認 ${st.unchecked}語を確認します。全部を毎日回さず、苦手語だけを重点的に残します。`:`800語すべて一度確認済みです。苦手 ${st.weak}語・要復習 ${st.review}語を優先しつつ、ランダム100語で仕上がりを測れます。`;
+    $("part1AssessBtn").textContent=unseen.length?`未確認 ${unseen.length}語から最大100語をチェック`:"500〜800の未確認はありません";
+    $("part1AssessBtn").disabled=unseen.length===0; $("part1AssessBtn").style.opacity=unseen.length===0?".45":"1";
+    const weakCount=st.weak+st.review;
+    $("part1WeakBtn").textContent=weakCount?`苦手・要復習から最大100語（${weakCount}語）`:"苦手・要復習はありません";
+    $("part1WeakBtn").disabled=weakCount===0; $("part1WeakBtn").style.opacity=weakCount===0?".45":"1";
+    $("part1CheckBtn").disabled=st.unchecked>0; $("part1CheckBtn").style.opacity=st.unchecked>0?".45":"1";
+    $("part1CheckBtn").textContent=st.unchecked>0?`未確認あと${st.unchecked}語`:"ランダム100語チェック";
+  }
+  $("part1PassStatus").innerHTML=`<strong>Part 1 合格目安：</strong>ランダム100語で90%以上を別日に2回　<span style="font-weight:900;color:${st.passDays>=2?'var(--ok)':'var(--accent)'}">${Math.min(st.passDays,2)} / 2日</span>${st.passDays>=2?' ✓':''}`;
+}
+function setPart1Phase(phase){
+  FOCUS.phase=phase; saveJSON(K.focus,FOCUS); renderPart1Focus(); renderPlan();
+}
+
 function getDailyReviewCap(){
   const v=Number(SETTINGS.reviewCap);
   return v===0?Infinity:Math.max(0,Number.isFinite(v)?v:50);
@@ -659,7 +814,9 @@ function refreshHome(){
     return;
   }
   readSettings();
-  const inRange=WORDS.filter(w=>w.no>=SETTINGS.start&&w.no<=SETTINGS.end);
+  let inRange=WORDS.filter(w=>w.no>=SETTINGS.start&&w.no<=SETTINGS.end);
+  if(mode==="normal" && FOCUS.phase==="book") inRange=inRange.filter(w=>w.no<=499);
+  else if(mode==="normal" && FOCUS.phase!=="normal") inRange=inRange.filter(w=>w.no<=Math.min(800,WORDS.length));
   const now=Date.now();
   let due=0,wrong=0,attempts=0,corrects=0;
   for(const w of inRange){
@@ -674,6 +831,7 @@ function refreshHome(){
   $("wrongStat").textContent=wrong;
   $("todayStat").textContent=d.attempts||0;
   $("accStat").textContent=attempts?`${Math.round(corrects/attempts*100)}%`:"—";
+  renderPart1Focus();
   renderPlan();
 }
 
@@ -694,6 +852,18 @@ function buildSession(mode="normal"){
     const newWords=info.after?[]:WORDS.filter(w=>w.no>=info.start&&w.no<=info.end && !(STATE[String(w.no)]?.attempts>0)).sort((a,b)=>a.no-b.no);
     const seen=new Set();
     q=due.concat(newWords).filter(w=>{if(seen.has(w.no)) return false; seen.add(w.no); return true;});
+  }else if(mode==="part1old"){
+    const dueOld=WORDS.filter(w=>w.no>=1&&w.no<=499 && (STATE[String(w.no)]?.attempts||0)>0 && (STATE[String(w.no)]?.due||Infinity)<=now);
+    q=prioritizeDue(dueOld,50);
+  }else if(mode==="part1assess"){
+    q=WORDS.filter(w=>w.no>=Number(FOCUS.bookStart||500)&&w.no<=Number(FOCUS.bookEnd||800) && !(STATE[String(w.no)]?.attempts>0)).sort((a,b)=>a.no-b.no).slice(0,100);
+  }else if(mode==="part1weak"){
+    q=WORDS.filter(w=>w.no>=1&&w.no<=Math.min(800,WORDS.length) && (STATE[String(w.no)]?.attempts||0)>0 && part1Classify(w)!=="stable")
+      .sort((a,b)=>part1WeakScore(b,now)-part1WeakScore(a,now)).slice(0,100);
+  }else if(mode==="part1check"){
+    const pool=WORDS.filter(w=>w.no>=1&&w.no<=Math.min(800,WORDS.length));
+    if(pool.some(w=>!(STATE[String(w.no)]?.attempts>0))){ q=[]; }
+    else q=shuffle(pool.slice()).slice(0,100).map(w=>Object.assign({},w,{_part1Check:true,_noRetry:true}));
   }else if(mode==="wrong"){
     q=inRange.filter(w=>(STATE[String(w.no)]?.lapses||0)>0)
       .sort((a,b)=>(STATE[String(b.no)]?.lastSeen||0)-(STATE[String(a.no)]?.lastSeen||0));
@@ -716,7 +886,7 @@ function buildSession(mode="normal"){
   sessionQueue=q.map(w=>Object.assign({},w));
   currentIndex=0; sessionCorrect=0; sessionWrong=0; sessionAnswered=0; retryCount={};
   if(!sessionQueue.length){
-    let msg=mode==="wrong"?"誤答履歴がありません":mode==="plan"?"今日の新出と期限復習は完了しています":"出題できる単語がありません";
+    let msg=mode==="wrong"?"誤答履歴がありません":mode==="plan"?"今日の新出と期限復習は完了しています":mode==="part1old"?"1〜499で期限が来ている復習はありません":mode==="part1assess"?"500〜800の未確認はありません":mode==="part1weak"?"Part 1の苦手・要復習はありません":mode==="part1check"?"800語すべてを一度確認してからランダムチェックできます":"出題できる単語がありません";
     if(mode==="plan"){
       const st=planWordStats(getPlanInfo());
       if(st.dueTotal>0 && st.capRemaining<=0) msg="今日の復習上限に到達しました。残りは明日以降へ繰り越します";
@@ -729,6 +899,7 @@ function buildSession(mode="normal"){
 function startSession(mode="normal"){
   if(!WORDS.length){toast("単語データがありません");return}
   if(!buildSession(mode)) return;
+  currentSessionMode=mode;
   $("summaryWrap").style.display="none";
   $("studyCardWrap").style.display="block";
   switchView("studyView",false);
@@ -820,7 +991,16 @@ function finishSession(){
   const denom=sessionCorrect+sessionWrong;
   const acc=denom?Math.round(sessionCorrect/denom*100):0;
   $("summaryAccuracy").textContent=`${acc}%`;
-  $("summaryText").textContent=`正解 ${sessionCorrect} / 誤答 ${sessionWrong}（再テストを含む）`;
+  let summary=`正解 ${sessionCorrect} / 誤答 ${sessionWrong}（再テストを含む）`;
+  if(currentSessionMode==="part1check" && denom>=100){
+    FOCUS.checkHistory.push({date:todayKey(),accuracy:acc,count:denom,at:Date.now()});
+    FOCUS.checkHistory=FOCUS.checkHistory.slice(-30);
+    const passDates=new Set(FOCUS.checkHistory.filter(x=>x.count>=100&&x.accuracy>=90).map(x=>x.date));
+    if(passDates.size>=2) FOCUS.phase="passed";
+    persistAll();
+    summary=`Part 1 ランダム100語：正解 ${sessionCorrect} / 100（${acc}%）` + (acc>=90?" · 今日の合格条件クリア":" · 90%まであと少し");
+  }
+  $("summaryText").textContent=summary;
   $("studyCounter").textContent="完了";
   refreshAll();
 }
@@ -908,6 +1088,14 @@ document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",(
 
 $("startBtn").onclick=()=>startSession("normal");
 $("planStartBtn").onclick=()=>startSession("plan");
+$("part1ReviewOldBtn").onclick=()=>startSession("part1old");
+$("part1BookDoneBtn").onclick=()=>{
+  if(confirm("500〜800を単語帳で一度覚える段階を終えて、アプリで定着確認に進みますか？")) setPart1Phase("consolidate");
+};
+$("part1AssessBtn").onclick=()=>startSession("part1assess");
+$("part1WeakBtn").onclick=()=>startSession("part1weak");
+$("part1CheckBtn").onclick=()=>startSession("part1check");
+$("part1BackToBookBtn").onclick=()=>setPart1Phase("book");
 $("planStartDate").addEventListener("change",()=>{
   if($("planStartDate").value){ PLAN.startDate=$("planStartDate").value; saveJSON(K.plan,PLAN); renderPlan(); }
 });
@@ -922,12 +1110,12 @@ $("mistakeSearch").addEventListener("input",renderMistakes);
   $(id).addEventListener("change",()=>{readSettings();refreshHome()});
 });
 $("exportBtn").onclick=()=>{
-  const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),state:STATE,daily:DAILY,settings:SETTINGS,plan:PLAN},null,2)],{type:"application/json"});
+  const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),state:STATE,daily:DAILY,settings:SETTINGS,plan:PLAN,focus:FOCUS},null,2)],{type:"application/json"});
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`target1900-history-${todayKey()}.json`; a.click(); URL.revokeObjectURL(a.href);
 };
 $("resetBtn").onclick=()=>{
   if(!confirm("学習履歴をすべてリセットします。単語データは残ります。よろしいですか？"))return;
-  STATE={}; DAILY={}; persistAll(); refreshAll(); toast("学習履歴をリセットしました");
+  STATE={}; DAILY={}; FOCUS=Object.assign({},DEFAULT_FOCUS,{checkHistory:[]}); persistAll(); refreshAll(); toast("学習履歴をリセットしました");
 };
 
 document.addEventListener("visibilitychange",()=>{
