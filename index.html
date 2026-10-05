@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f8fb">
-<title>Target 1900 | Part 1定着 + 3秒音声リコール</title>
+<title>Target 1900 | Section達成度 + 弱点攻略</title>
 <style>
 :root{
   --bg:#f6f7fb;--panel:#fff;--text:#15171c;--muted:#6e7480;--line:#e7e9ef;
@@ -117,6 +117,44 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
 .focus-mini{font-size:10px;color:var(--muted);line-height:1.55;margin-top:9px}
 @media(max-width:420px){.focus-actions.two{grid-template-columns:1fr}.focus-score{min-width:62px}.focus-card h2{font-size:19px}}
 
+
+/* Section progress + weak rescue */
+.section-progress-card{padding:16px}
+.section-progress-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}
+.section-progress-head h2,.rescue-card h2{font-size:18px;line-height:1.35;margin:0;letter-spacing:-.025em}
+.section-progress-head p,.rescue-desc{font-size:11px;color:var(--muted);line-height:1.55;margin:4px 0 0}
+.section-goal{font-size:11px;font-weight:850;color:#5c4300;background:#fff7df;border:1px solid #f4e2a8;border-radius:13px;padding:9px 11px;margin:10px 0 12px;line-height:1.5}
+.section-progress-list{display:flex;flex-direction:column;gap:10px}
+.section-row{border:1px solid var(--line);border-radius:15px;padding:11px 12px;background:#fbfcfe}
+.section-row-top{display:flex;align-items:center;gap:9px}
+.section-num{width:30px;height:30px;border-radius:10px;background:#eef3ff;color:var(--accent);display:grid;place-items:center;font-size:12px;font-weight:900;flex:none}
+.section-row-main{min-width:0;flex:1}
+.section-row-title{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;font-weight:900}
+.section-grade{font-size:10px;border-radius:999px;background:#f0f2f6;padding:4px 7px;color:#545b66;white-space:nowrap}
+.section-row-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.stackbar{height:10px;display:flex;border-radius:999px;overflow:hidden;background:#eceef3;margin-top:9px}
+.stackbar span{height:100%;min-width:0}
+.seg-stable{background:#1e9b62}.seg-review{background:#e5ae2b}.seg-weak{background:#d95757}.seg-unchecked{background:#e4e7ed}
+.section-legend{display:flex;flex-wrap:wrap;gap:8px 12px;margin-top:11px;font-size:9px;color:var(--muted);font-weight:750}
+.legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:-1px}
+.section-weak-btn{border:0;border-radius:9px;background:#fff0f0;color:var(--bad);font-size:10px;font-weight:900;padding:6px 8px;white-space:nowrap}
+.rescue-card{padding:17px}
+.rescue-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.rescue-badge{font-size:10px;font-weight:900;color:#a33;background:#fff0f0;border-radius:999px;padding:5px 8px;white-space:nowrap}
+.rescue-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0}
+.rescue-metric{background:#fafbfc;border:1px solid var(--line);border-radius:13px;padding:9px 8px;text-align:center}
+.rescue-metric b{display:block;font-size:20px}.rescue-metric span{display:block;font-size:9px;color:var(--muted);font-weight:800;margin-top:1px}
+.rescue-progress{height:9px;background:#eceef3;border-radius:999px;overflow:hidden;margin:10px 0}
+.rescue-progress>div{height:100%;background:var(--ok);border-radius:999px;transition:width .25s ease}
+.rescue-rule{font-size:10px;line-height:1.55;color:#59616e;background:#f7f8fb;border-radius:12px;padding:9px 10px;margin-top:10px}
+.rescue-card .primary{margin-top:2px}
+.status-group{display:flex;gap:5px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.pill.status-red{background:#fff0f0;color:#b73333}.pill.status-amber{background:#fff6dd;color:#8a5a00}.pill.status-green{background:#e8f7ef;color:#138a56}.pill.status-gray{background:#f0f2f6;color:#626975}
+@media(max-width:420px){
+  .section-row-title{font-size:11px}.section-row-sub{font-size:9px}
+  .rescue-grid{gap:5px}.rescue-metric b{font-size:18px}
+}
+
 /* Study */
 .study-top{display:flex;align-items:center;gap:12px;margin:5px 0 12px}
 .progress-track{height:7px;background:#e4e7ed;border-radius:20px;overflow:hidden;flex:1}
@@ -193,7 +231,7 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
 <body>
 <div class="app">
   <header class="topbar">
-    <div class="brand">Target 1900 <small>Part 1定着 · 3秒音声リコール · 適応復習</small></div>
+    <div class="brand">Target 1900 <small>Section達成度 · 弱点攻略 · 3秒音声リコール</small></div>
     <button class="iconbtn" id="quickSpeak" aria-label="音声テスト">🔊</button>
   </header>
 
@@ -255,6 +293,45 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
         </div>
         <div class="focus-pass" id="part1PassStatus"></div>
         <div class="focus-mini">安定＝直近正解・連続2回以上正解・記憶安定度4日以上。苦手＝直近誤答、または誤答が重なり安定度が低い語。合格判定は、800語すべて確認後のランダム100語で90%以上を別日に2回。</div>
+      </div>
+
+
+      <div class="section-title">Section別の達成度</div>
+      <div class="card section-progress-card">
+        <div class="section-progress-head">
+          <div>
+            <h2>Part 1を8つの山に分けて見える化</h2>
+            <p>緑が増えるほど定着。赤い部分は「次に伸ばせる語」です。</p>
+          </div>
+        </div>
+        <div class="section-goal" id="sectionGoalText">次の小目標を計算中…</div>
+        <div class="section-progress-list" id="sectionProgressList"></div>
+        <div class="section-legend">
+          <span><i class="legend-dot" style="background:#1e9b62"></i>安定</span>
+          <span><i class="legend-dot" style="background:#e5ae2b"></i>要復習</span>
+          <span><i class="legend-dot" style="background:#d95757"></i>苦手</span>
+          <span><i class="legend-dot" style="background:#e4e7ed"></i>未確認</span>
+        </div>
+        <div class="focus-mini">達成度はモチベーション用の進捗指標です（安定100・要復習60・苦手25・未確認0で計算）。記憶研究上の正式な指標ではありません。</div>
+      </div>
+
+      <div class="section-title">できなかった単語を攻略</div>
+      <div class="card rescue-card">
+        <div class="rescue-top">
+          <div>
+            <h2>弱点攻略ループ</h2>
+            <p class="rescue-desc">間違えた語を「その場で正解しただけ」で終わらせず、翌日以降の再成功まで追跡します。</p>
+          </div>
+          <span class="rescue-badge" id="rescueBadge">攻略中 0</span>
+        </div>
+        <div class="rescue-grid">
+          <div class="rescue-metric"><b id="rescueRed">0</b><span>要攻略</span></div>
+          <div class="rescue-metric"><b id="rescueAmber">0</b><span>仮クリア</span></div>
+          <div class="rescue-metric"><b id="rescueGraduatedToday">0</b><span>今日卒業</span></div>
+        </div>
+        <div class="rescue-progress"><div id="rescueProgressBar" style="width:0%"></div></div>
+        <button class="primary" id="rescueStartBtn">今日の弱点15語を攻略</button>
+        <div class="rescue-rule"><b>卒業条件：</b>誤答 → 数問後に再テスト → 同日正解で「仮クリア」 → <b>翌日以降に3秒以内で再び正解</b>すると弱点攻略を卒業。卒業後も通常の間隔復習は続きます。</div>
       </div>
 
       <div class="section-title" id="regularPlanSection">1日100語・19日学習計画</div>
@@ -434,10 +511,11 @@ let STATE = loadJSON(K.state, {});
 let SETTINGS = Object.assign({start:1,end:1900,size:100,autoAudio:true,speechRate:0.85,reviewCap:50}, loadJSON(K.settings, {}));
 let DAILY = loadJSON(K.daily, {});
 let PLAN = Object.assign({startDate:todayKey(),dailyNew:100}, loadJSON(K.plan, {}));
-const DEFAULT_FOCUS={phase:"book",part1End:800,bookStart:500,bookEnd:800,checkHistory:[]};
+const DEFAULT_FOCUS={phase:"book",part1End:800,bookStart:500,bookEnd:800,checkHistory:[],rescue:{}};
 let FOCUS = Object.assign({},DEFAULT_FOCUS,loadJSON(K.focus, {}));
 if(!Array.isArray(FOCUS.checkHistory)) FOCUS.checkHistory=[];
-let sessionQueue=[], currentIndex=0, sessionCorrect=0, sessionWrong=0, sessionAnswered=0, currentSessionMode="normal";
+if(!FOCUS.rescue || typeof FOCUS.rescue!=="object" || Array.isArray(FOCUS.rescue)) FOCUS.rescue={};
+let sessionQueue=[], currentIndex=0, sessionCorrect=0, sessionWrong=0, sessionAnswered=0, sessionRescueRecovered=0, sessionRescueGraduated=0, currentSessionMode="normal", currentSectionTarget=null;
 let retryCount={};
 let currentWord=null, currentPromptStart=0, timerDeadline=0, timerRemaining=3000, timerRAF=0, timerRunning=false, promptResolved=false;
 let voices=[];
@@ -452,6 +530,128 @@ function toast(msg){
 }
 function clamp(v,min,max){ return Math.min(max,Math.max(min,v)); }
 function escapeText(v){ return String(v ?? ""); }
+
+function dateKeyFromTs(ts){
+  const d=new Date(Number(ts)||Date.now());
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+function ensureDaily(){
+  const key=todayKey();
+  if(!DAILY[key]) DAILY[key]={attempts:0,corrects:0,wrong:0,planReviews:0,rescued:0};
+  return DAILY[key];
+}
+function ensureRescue(no){
+  const k=String(no);
+  if(!FOCUS.rescue[k]) FOCUS.rescue[k]={status:"red",failCount:0,lastFailDate:"",recoveredDate:"",graduatedDate:"",nextDue:0};
+  return FOCUS.rescue[k];
+}
+function bootstrapRescueFromState(){
+  let changed=false;
+  const end=Math.min(800,WORDS.length);
+  for(const w of WORDS){
+    if(w.no<1||w.no>end) continue;
+    const s=STATE[String(w.no)];
+    if(!s?.attempts || FOCUS.rescue[String(w.no)]) continue;
+    if(part1Classify(w)!=="weak") continue;
+    const d=dateKeyFromTs(s.lastSeen);
+    FOCUS.rescue[String(w.no)]={
+      status:s.lastResult==="correct"?"amber":"red",
+      failCount:Math.max(1,s.lapses||1),
+      lastFailDate:d,
+      recoveredDate:s.lastResult==="correct"?d:"",
+      graduatedDate:"",
+      nextDue:s.lastResult==="correct"?Math.max(Date.now(),Number(s.due)||0):0
+    };
+    changed=true;
+  }
+  if(changed) saveJSON(K.focus,FOCUS);
+}
+function rescueOnWrong(word){
+  if(!word || word.no>800) return;
+  const r=ensureRescue(word.no);
+  r.status="red";
+  r.failCount=(r.failCount||0)+1;
+  r.lastFailDate=todayKey();
+  r.recoveredDate="";
+  r.graduatedDate="";
+  r.nextDue=0;
+}
+function rescueOnCorrect(word,latency){
+  if(!word || word.no>800) return;
+  const r=FOCUS.rescue[String(word.no)];
+  if(!r || latency>3000 || r.status==="graduated") return;
+  const today=todayKey();
+  if(r.status==="red"){
+    r.status="amber";
+    r.recoveredDate=today;
+    r.nextDue=Date.now()+DAY;
+    sessionRescueRecovered++;
+    return;
+  }
+  if(r.status==="amber" && r.recoveredDate && r.recoveredDate!==today){
+    r.status="graduated";
+    r.graduatedDate=today;
+    r.nextDue=0;
+    const d=ensureDaily();
+    d.rescued=(d.rescued||0)+1;
+    sessionRescueGraduated++;
+  }
+}
+function rescueStatusForWord(w){
+  return FOCUS.rescue[String(w.no)]?.status||"";
+}
+function rescueStats(){
+  bootstrapRescueFromState();
+  let red=0,amber=0,graduated=0,ever=0,due=0;
+  const now=Date.now();
+  for(const [no,r] of Object.entries(FOCUS.rescue||{})){
+    const n=Number(no); if(n<1||n>800||!r) continue;
+    ever++;
+    if(r.status==="red"){red++;due++;}
+    else if(r.status==="amber"){
+      amber++;
+      if((r.nextDue||0)<=now) due++;
+    }else if(r.status==="graduated") graduated++;
+  }
+  const todayGraduated=DAILY[todayKey()]?.rescued||0;
+  return {red,amber,graduated,ever,due,todayGraduated};
+}
+function rescueCandidates(limit=15,section=null){
+  bootstrapRescueFromState();
+  const now=Date.now();
+  let arr=WORDS.filter(w=>{
+    if(w.no<1||w.no>800) return false;
+    if(section && w.section!==section) return false;
+    const r=FOCUS.rescue[String(w.no)];
+    if(!r || r.status==="graduated") return false;
+    if(r.status==="amber" && (r.nextDue||0)>now) return false;
+    return true;
+  });
+  arr.sort((a,b)=>{
+    const ra=FOCUS.rescue[String(a.no)]||{}, rb=FOCUS.rescue[String(b.no)]||{};
+    const sa=ra.status==="red"?1:0, sb=rb.status==="red"?1:0;
+    return sb-sa || part1WeakScore(b,now)-part1WeakScore(a,now);
+  });
+  return arr.slice(0,limit);
+}
+function getSectionProgress(section){
+  const arr=WORDS.filter(w=>w.section===section);
+  const c={stable:0,review:0,weak:0,unchecked:0,total:arr.length,attempted:0};
+  for(const w of arr){
+    const cls=part1Classify(w); c[cls]++;
+    if(cls!=="unchecked") c.attempted++;
+  }
+  c.score=c.total?Math.round((c.stable + c.review*.60 + c.weak*.25)/c.total*100):0;
+  c.stableRate=c.total?Math.round(c.stable/c.total*100):0;
+  return c;
+}
+function sectionGrade(score){
+  if(score>=90) return "S";
+  if(score>=75) return "A";
+  if(score>=60) return "B";
+  if(score>=40) return "C";
+  return "D";
+}
 
 function normalizeState(no){
   const k=String(no);
@@ -521,9 +721,7 @@ function migrateState(){
   if(changed) saveJSON(K.state,STATE);
 }
 function recordDaily(ok,word){
-  const key=todayKey();
-  if(!DAILY[key]) DAILY[key]={attempts:0,corrects:0,wrong:0,planReviews:0};
-  const d=DAILY[key];
+  const d=ensureDaily();
   d.attempts=(d.attempts||0)+1;
   if(ok) d.corrects=(d.corrects||0)+1; else d.wrong=(d.wrong||0)+1;
   if(word?._planReview) d.planReviews=(d.planReviews||0)+1;
@@ -572,6 +770,7 @@ function recordCorrect(word,latency){
   if(latency<=1500) s.fluent=(s.fluent||0)+1;
   s.successStreak=recovery?1:(s.successStreak||0)+1;
   scheduleAdaptiveDue(s,word,baseDays);
+  rescueOnCorrect(word,latency);
   recordDaily(true,word); sessionCorrect++; sessionAnswered++;
   persistAll();
 }
@@ -583,6 +782,7 @@ function recordWrong(word,latency,reason){
   s.lastIntervalDays=1;
   s.due=Date.now()+DAY;
   s.schedulerVersion=SCHEDULER_VERSION;
+  rescueOnWrong(word);
   recordDaily(false,word); sessionWrong++; sessionAnswered++;
   persistAll();
   scheduleRetry(word);
@@ -710,7 +910,7 @@ function renderPart1Focus(){
     $("part1AssessBtn").textContent=unseen.length?`未確認 ${unseen.length}語から最大100語をチェック`:"500〜800の未確認はありません";
     $("part1AssessBtn").disabled=unseen.length===0; $("part1AssessBtn").style.opacity=unseen.length===0?".45":"1";
     const weakCount=st.weak+st.review;
-    $("part1WeakBtn").textContent=weakCount?`苦手・要復習から最大100語（${weakCount}語）`:"苦手・要復習はありません";
+    $("part1WeakBtn").textContent=weakCount?`弱点攻略15語（候補${weakCount}語）`:"弱点攻略対象はありません";
     $("part1WeakBtn").disabled=weakCount===0; $("part1WeakBtn").style.opacity=weakCount===0?".45":"1";
     $("part1CheckBtn").disabled=st.unchecked>0; $("part1CheckBtn").style.opacity=st.unchecked>0?".45":"1";
     $("part1CheckBtn").textContent=st.unchecked>0?`未確認あと${st.unchecked}語`:"ランダム100語チェック";
@@ -752,6 +952,65 @@ function planWordStats(info){
   const duePlanned=Number.isFinite(capRemaining)?Math.min(dueTotal,capRemaining):dueTotal;
   return {attempted,remaining,dueTotal,duePlanned,total:range.length,cap,reviewedToday,capRemaining};
 }
+
+function renderSectionProgress(){
+  if(!WORDS.length) return;
+  const host=$("sectionProgressList"); if(!host) return;
+  host.innerHTML="";
+  let bestGoal=null;
+  for(let sec=1;sec<=8;sec++){
+    const c=getSectionProgress(sec);
+    if(!c.total) continue;
+    const nextMilestone=Math.min(100,Math.max(10,Math.ceil((c.score+1)/10)*10));
+    const needScore=Math.max(0,nextMilestone-c.score);
+    if(c.attempted>0 && c.score<100 && (!bestGoal || needScore<bestGoal.needScore)) bestGoal={sec,goal:nextMilestone,needScore};
+    const row=document.createElement("div");
+    row.className="section-row";
+    const weakBtn=(c.weak+c.review)>0?`<button class="section-weak-btn" data-section-weak="${sec}">弱点</button>`:"";
+    row.innerHTML=`
+      <div class="section-row-top">
+        <div class="section-num">${sec}</div>
+        <div class="section-row-main">
+          <div class="section-row-title"><span>Section ${sec} <span class="section-grade">${sectionGrade(c.score)} · 達成 ${c.score}%</span></span>${weakBtn}</div>
+          <div class="section-row-sub">安定 ${c.stable} · 要復習 ${c.review} · 苦手 ${c.weak} · 未確認 ${c.unchecked}</div>
+        </div>
+      </div>
+      <div class="stackbar" aria-label="Section ${sec}の進捗">
+        <span class="seg-stable" style="width:${c.total?c.stable/c.total*100:0}%"></span>
+        <span class="seg-review" style="width:${c.total?c.review/c.total*100:0}%"></span>
+        <span class="seg-weak" style="width:${c.total?c.weak/c.total*100:0}%"></span>
+        <span class="seg-unchecked" style="width:${c.total?c.unchecked/c.total*100:0}%"></span>
+      </div>`;
+    host.appendChild(row);
+  }
+  const goal=$("sectionGoalText");
+  if(goal){
+    if(bestGoal) goal.textContent=`次の小目標：Section ${bestGoal.sec} の達成度を ${bestGoal.goal}% へ。赤→黄→緑を少しずつ増やそう。`;
+    else goal.textContent="Part 1の各Sectionがかなり整ってきています。弱点攻略とランダム確認で仕上げよう。";
+  }
+  host.querySelectorAll("[data-section-weak]").forEach(btn=>{
+    btn.onclick=()=>{
+      currentSectionTarget=Number(btn.dataset.sectionWeak);
+      startSession("sectionweak");
+    };
+  });
+}
+function renderRescue(){
+  if(!WORDS.length) return;
+  const st=rescueStats();
+  $("rescueRed").textContent=st.red;
+  $("rescueAmber").textContent=st.amber;
+  $("rescueGraduatedToday").textContent=st.todayGraduated;
+  $("rescueBadge").textContent=`攻略中 ${st.red+st.amber}`;
+  const pct=st.ever?Math.round(st.graduated/st.ever*100):0;
+  $("rescueProgressBar").style.width=`${pct}%`;
+  const btn=$("rescueStartBtn");
+  const due=rescueCandidates(15).length;
+  btn.textContent=due?`今日の弱点 ${due}語を攻略`:(st.red+st.amber?`次の攻略は明日以降（仮クリア ${st.amber}語）`:"攻略中の弱点はありません");
+  btn.disabled=due===0;
+  btn.style.opacity=btn.disabled?".5":"1";
+}
+
 function renderPlan(){
   if(!WORDS.length) return;
   if(!PLAN.startDate) PLAN.startDate=todayKey();
@@ -815,8 +1074,8 @@ function refreshHome(){
   }
   readSettings();
   let inRange=WORDS.filter(w=>w.no>=SETTINGS.start&&w.no<=SETTINGS.end);
-  if(mode==="normal" && FOCUS.phase==="book") inRange=inRange.filter(w=>w.no<=499);
-  else if(mode==="normal" && FOCUS.phase!=="normal") inRange=inRange.filter(w=>w.no<=Math.min(800,WORDS.length));
+  if(FOCUS.phase==="book") inRange=inRange.filter(w=>w.no<=499);
+  else if(FOCUS.phase!=="normal") inRange=inRange.filter(w=>w.no<=Math.min(800,WORDS.length));
   const now=Date.now();
   let due=0,wrong=0,attempts=0,corrects=0;
   for(const w of inRange){
@@ -832,6 +1091,8 @@ function refreshHome(){
   $("todayStat").textContent=d.attempts||0;
   $("accStat").textContent=attempts?`${Math.round(corrects/attempts*100)}%`:"—";
   renderPart1Focus();
+  renderSectionProgress();
+  renderRescue();
   renderPlan();
 }
 
@@ -858,8 +1119,24 @@ function buildSession(mode="normal"){
   }else if(mode==="part1assess"){
     q=WORDS.filter(w=>w.no>=Number(FOCUS.bookStart||500)&&w.no<=Number(FOCUS.bookEnd||800) && !(STATE[String(w.no)]?.attempts>0)).sort((a,b)=>a.no-b.no).slice(0,100);
   }else if(mode==="part1weak"){
-    q=WORDS.filter(w=>w.no>=1&&w.no<=Math.min(800,WORDS.length) && (STATE[String(w.no)]?.attempts||0)>0 && part1Classify(w)!=="stable")
-      .sort((a,b)=>part1WeakScore(b,now)-part1WeakScore(a,now)).slice(0,100);
+    q=rescueCandidates(15).map(w=>Object.assign({},w,{_rescue:true}));
+    if(q.length<15){
+      const used=new Set(q.map(w=>w.no));
+      const fill=WORDS.filter(w=>w.no>=1&&w.no<=Math.min(800,WORDS.length) && !used.has(w.no) && (STATE[String(w.no)]?.attempts||0)>0 && part1Classify(w)!=="stable")
+        .sort((a,b)=>part1WeakScore(b,now)-part1WeakScore(a,now)).slice(0,15-q.length)
+        .map(w=>Object.assign({},w,{_rescue:true}));
+      q=q.concat(fill);
+    }
+  }else if(mode==="sectionweak"){
+    const sec=Number(currentSectionTarget)||1;
+    q=rescueCandidates(15,sec).map(w=>Object.assign({},w,{_rescue:true}));
+    if(q.length<15){
+      const used=new Set(q.map(w=>w.no));
+      const fill=WORDS.filter(w=>w.section===sec && w.no<=800 && !used.has(w.no) && (STATE[String(w.no)]?.attempts||0)>0 && part1Classify(w)!=="stable")
+        .sort((a,b)=>part1WeakScore(b,now)-part1WeakScore(a,now)).slice(0,15-q.length)
+        .map(w=>Object.assign({},w,{_rescue:true}));
+      q=q.concat(fill);
+    }
   }else if(mode==="part1check"){
     const pool=WORDS.filter(w=>w.no>=1&&w.no<=Math.min(800,WORDS.length));
     if(pool.some(w=>!(STATE[String(w.no)]?.attempts>0))){ q=[]; }
@@ -884,9 +1161,9 @@ function buildSession(mode="normal"){
     }
   }
   sessionQueue=q.map(w=>Object.assign({},w));
-  currentIndex=0; sessionCorrect=0; sessionWrong=0; sessionAnswered=0; retryCount={};
+  currentIndex=0; sessionCorrect=0; sessionWrong=0; sessionAnswered=0; sessionRescueRecovered=0; sessionRescueGraduated=0; retryCount={};
   if(!sessionQueue.length){
-    let msg=mode==="wrong"?"誤答履歴がありません":mode==="plan"?"今日の新出と期限復習は完了しています":mode==="part1old"?"1〜499で期限が来ている復習はありません":mode==="part1assess"?"500〜800の未確認はありません":mode==="part1weak"?"Part 1の苦手・要復習はありません":mode==="part1check"?"800語すべてを一度確認してからランダムチェックできます":"出題できる単語がありません";
+    let msg=mode==="wrong"?"誤答履歴がありません":mode==="plan"?"今日の新出と期限復習は完了しています":mode==="part1old"?"1〜499で期限が来ている復習はありません":mode==="part1assess"?"500〜800の未確認はありません":mode==="part1weak"?"今日攻略する弱点はありません":mode==="sectionweak"?`Section ${currentSectionTarget||""} に攻略対象はありません`:mode==="part1check"?"800語すべてを一度確認してからランダムチェックできます":"出題できる単語がありません";
     if(mode==="plan"){
       const st=planWordStats(getPlanInfo());
       if(st.dueTotal>0 && st.capRemaining<=0) msg="今日の復習上限に到達しました。残りは明日以降へ繰り越します";
@@ -909,7 +1186,7 @@ function showCurrent(){
   clearTimer();
   if(currentIndex>=sessionQueue.length){ finishSession(); return; }
   currentWord=sessionQueue[currentIndex]; promptResolved=false;
-  $("wordNo").textContent=`No.${currentWord.no}${currentWord._retry?" · 再テスト":""}`;
+  $("wordNo").textContent=`No.${currentWord.no}${currentWord._retry?" · 再テスト":""}${currentWord._rescue?" · 弱点攻略":""}`;
   $("wordSection").textContent=currentWord.section?`Section ${currentWord.section}`:"";
   $("wordText").textContent=currentWord.word;
   setMeaning($("answerText"),currentWord.meaning);
@@ -992,6 +1269,9 @@ function finishSession(){
   const acc=denom?Math.round(sessionCorrect/denom*100):0;
   $("summaryAccuracy").textContent=`${acc}%`;
   let summary=`正解 ${sessionCorrect} / 誤答 ${sessionWrong}（再テストを含む）`;
+  if(currentSessionMode==="part1weak" || currentSessionMode==="sectionweak"){
+    summary=`弱点攻略：正解 ${sessionCorrect} / 誤答 ${sessionWrong} · 仮クリア ${sessionRescueRecovered} · 今日卒業 ${sessionRescueGraduated}`;
+  }
   if(currentSessionMode==="part1check" && denom>=100){
     FOCUS.checkHistory.push({date:todayKey(),accuracy:acc,count:denom,at:Date.now()});
     FOCUS.checkHistory=FOCUS.checkHistory.slice(-30);
@@ -1024,14 +1304,21 @@ function renderMistakes(){
   const q=$("mistakeSearch").value.trim().toLowerCase();
   let arr=WORDS.filter(w=>(STATE[String(w.no)]?.lapses||0)>0);
   if(q) arr=arr.filter(w=>w.word.toLowerCase().includes(q)||w.meaning.toLowerCase().includes(q)||String(w.no)===q);
-  arr.sort((a,b)=>(STATE[String(b.no)]?.lastSeen||0)-(STATE[String(a.no)]?.lastSeen||0));
+  arr.sort((a,b)=>{
+    const rank=s=>s==="red"?3:s==="amber"?2:s==="graduated"?0:1;
+    const d=rank(rescueStatusForWord(b))-rank(rescueStatusForWord(a));
+    return d || (STATE[String(b.no)]?.lastSeen||0)-(STATE[String(a.no)]?.lastSeen||0);
+  });
   const host=$("mistakeList"); host.innerHTML="";
   if(!arr.length){host.innerHTML=`<div class="empty">誤答リストはまだありません。</div>`;return}
   const frag=document.createDocumentFragment();
   for(const w of arr){
     const s=STATE[String(w.no)];
     const el=document.createElement("div"); el.className="card mistake";
-    el.innerHTML=`<div class="head"><div><div class="en"></div><div class="jp"></div></div><span class="pill">${s.lapses}回</span></div>
+    const rs=rescueStatusForWord(w);
+    const statusLabel=rs==="red"?"要攻略":rs==="amber"?"仮クリア":rs==="graduated"?"攻略卒業":"復習中";
+    const statusClass=rs==="red"?"status-red":rs==="amber"?"status-amber":rs==="graduated"?"status-green":"status-gray";
+    el.innerHTML=`<div class="head"><div><div class="en"></div><div class="jp"></div></div><div class="status-group"><span class="pill ${statusClass}">${statusLabel}</span><span class="pill">${s.lapses}回</span></div></div>
       <div class="foot"><span>No.${w.no}${w.section?` · Sec.${w.section}`:""}</span><button class="minispeak" aria-label="音声">🔊</button></div>`;
     el.querySelector(".en").textContent=w.word;
     setMeaning(el.querySelector(".jp"),w.meaning);
@@ -1094,6 +1381,7 @@ $("part1BookDoneBtn").onclick=()=>{
 };
 $("part1AssessBtn").onclick=()=>startSession("part1assess");
 $("part1WeakBtn").onclick=()=>startSession("part1weak");
+$("rescueStartBtn").onclick=()=>startSession("part1weak");
 $("part1CheckBtn").onclick=()=>startSession("part1check");
 $("part1BackToBookBtn").onclick=()=>setPart1Phase("book");
 $("planStartDate").addEventListener("change",()=>{
@@ -1115,7 +1403,7 @@ $("exportBtn").onclick=()=>{
 };
 $("resetBtn").onclick=()=>{
   if(!confirm("学習履歴をすべてリセットします。単語データは残ります。よろしいですか？"))return;
-  STATE={}; DAILY={}; FOCUS=Object.assign({},DEFAULT_FOCUS,{checkHistory:[]}); persistAll(); refreshAll(); toast("学習履歴をリセットしました");
+  STATE={}; DAILY={}; FOCUS=Object.assign({},DEFAULT_FOCUS,{checkHistory:[],rescue:{}}); persistAll(); refreshAll(); toast("学習履歴をリセットしました");
 };
 
 document.addEventListener("visibilitychange",()=>{
