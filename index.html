@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f8fb">
-<title>Target 1900 | Section達成度 + 弱点攻略</title>
+<title>Target 1900 | 新規100語 + 弱点攻略 + 通学リスニング</title>
 <style>
 :root{
   --bg:#f6f7fb;--panel:#fff;--text:#15171c;--muted:#6e7480;--line:#e7e9ef;
@@ -90,7 +90,7 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
 .plan-dayrow .date{color:var(--muted);font-variant-numeric:tabular-nums}
 .plan-complete{background:var(--okbg);color:var(--ok);border-radius:14px;padding:11px 12px;font-size:12px;font-weight:800;margin-bottom:12px}
 .start-wrap{position:sticky;bottom:82px;margin-top:18px;z-index:3}
-.nav{position:fixed;z-index:20;left:50%;transform:translateX(-50%);bottom:0;width:min(620px,100%);padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(246,247,251,.94);backdrop-filter:blur(14px);border-top:1px solid rgba(220,223,231,.8);display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.nav{position:fixed;z-index:20;left:50%;transform:translateX(-50%);bottom:0;width:min(620px,100%);padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(246,247,251,.94);backdrop-filter:blur(14px);border-top:1px solid rgba(220,223,231,.8);display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
 .nav button{border:0;background:transparent;color:#767c87;border-radius:13px;min-height:54px;font-size:11px;font-weight:800}
 .nav button .ico{display:block;font-size:20px;line-height:23px;margin-bottom:1px}
 .nav button.active{background:#e9eefc;color:var(--accent)}
@@ -154,6 +154,27 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
   .section-row-title{font-size:11px}.section-row-sub{font-size:9px}
   .rescue-grid{gap:5px}.rescue-metric b{font-size:18px}
 }
+
+
+/* New 100 + commute listening */
+.new100-card{padding:18px;background:linear-gradient(145deg,#ffffff 0%,#f4f8ff 100%)}
+.new100-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.new100-kicker{display:inline-block;font-size:10px;font-weight:900;color:var(--accent);background:var(--accent2);border-radius:999px;padding:5px 8px;margin-bottom:7px}
+.new100-card h2{font-size:21px;line-height:1.3;letter-spacing:-.035em;margin:0}
+.new100-desc{font-size:11px;color:var(--muted);line-height:1.55;margin:5px 0 0}
+.new100-count{flex:none;min-width:72px;text-align:center;border-radius:15px;background:#fff;border:1px solid #dfe8ff;padding:9px 7px}
+.new100-count b{display:block;font-size:22px;color:var(--accent)}.new100-count small{display:block;font-size:9px;color:var(--muted);font-weight:800}
+.new100-progress{height:9px;background:#e4eaf7;border-radius:999px;overflow:hidden;margin:15px 0 12px}.new100-progress>div{height:100%;background:var(--accent);border-radius:999px}
+.new100-meta{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted);font-weight:800;margin-bottom:12px}
+.new100-note{font-size:10px;color:#536078;line-height:1.55;margin-top:9px}
+.listen-hero{padding:20px}
+.listen-hero h1{font-size:25px;letter-spacing:-.04em;margin:0 0 7px}.listen-hero p{font-size:12px;color:var(--muted);line-height:1.65;margin:0}
+.listen-sequence{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px 0 3px;flex-wrap:wrap}.listen-chip{font-size:11px;font-weight:900;border-radius:999px;padding:7px 10px;background:#edf3ff;color:var(--accent)}.listen-arrow{color:#8b93a0;font-weight:900}
+.listen-player{padding:21px;text-align:center;overflow:hidden;position:relative}.listen-status{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:10px;font-weight:800}.listen-word{font-size:clamp(38px,12vw,58px);font-weight:900;letter-spacing:-.045em;margin:28px 0 7px;overflow-wrap:anywhere}.listen-meaning{font-size:20px;font-weight:850;line-height:1.45;min-height:58px;display:grid;place-items:center}.listen-meaning .meaning-primary{color:#d22f3f}.listen-progress{height:7px;background:#e7eaf0;border-radius:999px;overflow:hidden;margin:22px 0 13px}.listen-progress>div{height:100%;background:linear-gradient(90deg,#2563eb,#14b8a6);border-radius:999px;transition:width .2s}.listen-controls{display:grid;grid-template-columns:52px 1fr 52px;gap:8px}.listen-controls button{min-height:52px;border:0;border-radius:15px;font-weight:900}.listen-skip{background:#f0f2f6;color:#343944;font-size:18px}.listen-toggle{background:var(--accent);color:white;font-size:15px;box-shadow:0 8px 18px rgba(37,99,235,.2)}
+.listen-mini{font-size:10px;line-height:1.55;color:var(--muted);margin-top:11px}.listen-countline{font-size:11px;color:#4f5663;font-weight:800;margin:10px 0 0;text-align:center}
+.listen-settings{padding:17px}.listen-settings .row{padding:10px 0}.listen-settings select{max-width:155px}
+.listen-warning{background:#fff8e8;color:#694b14;border:1px solid #f3dfac;border-radius:14px;padding:11px 12px;font-size:10px;line-height:1.6;margin-top:12px}
+@media(max-width:380px){.nav button{font-size:10px}.nav button .ico{font-size:18px}.listen-controls{grid-template-columns:48px 1fr 48px}.new100-card h2{font-size:19px}}
 
 /* Study */
 .study-top{display:flex;align-items:center;gap:12px;margin:5px 0 12px}
@@ -253,6 +274,23 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
         <div class="stat"><div class="v" id="wrongStat">—</div><div class="k">誤答履歴</div></div>
         <div class="stat"><div class="v" id="todayStat">—</div><div class="k">今日の回答</div></div>
         <div class="stat"><div class="v" id="accStat">—</div><div class="k">累計正答率</div></div>
+      </div>
+
+
+      <div class="section-title">新規学習 · 自動100語</div>
+      <div class="card new100-card">
+        <div class="new100-top">
+          <div>
+            <span class="new100-kicker">NEXT 100</span>
+            <h2 id="new100Title">次の100語を準備中</h2>
+            <p class="new100-desc" id="new100Desc">未学習をNo.順に100語ずつ自動で選びます。</p>
+          </div>
+          <div class="new100-count"><b id="new100Remaining">—</b><small>残り</small></div>
+        </div>
+        <div class="new100-progress"><div id="new100Progress" style="width:0%"></div></div>
+        <div class="new100-meta"><span id="new100Section">Section —</span><span id="new100Range">No.—–—</span></div>
+        <button class="primary" id="new100StartBtn">次の新規100語を始める</button>
+        <div class="new100-note">カレンダー日付に関係なく、最初に残っている100語区切りを自動選択します。途中まで進めた区切りは残りから再開します。復習語は混ぜず、新規だけに集中できます。</div>
       </div>
 
       <div class="section-title">Part 1（No.1–800）定着モード</div>
@@ -438,6 +476,41 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
       <div class="mistake-list" id="mistakeList"></div>
     </section>
 
+
+    <section class="view" id="listenView">
+      <div class="card listen-hero">
+        <h1>通学リスニング</h1>
+        <p>できなかった単語を、<b>英語 → 日本語 → 英語</b>の順に読み上げ、リストの最後まで行ったら先頭へ戻って巡回します。</p>
+        <div class="listen-sequence"><span class="listen-chip">English</span><span class="listen-arrow">→</span><span class="listen-chip">日本語</span><span class="listen-arrow">→</span><span class="listen-chip">English</span><span class="listen-arrow">↻</span></div>
+      </div>
+
+      <div class="section-title">再生する単語</div>
+      <div class="card listen-settings">
+        <div class="row"><div class="label"><strong>対象</strong><span>できなかった語を選ぶ</span></div><select id="listenSource"><option value="active" selected>攻略中の弱点</option><option value="mistakes">誤答した全単語</option><option value="recent">最近間違えた単語</option><option value="part1weak">Part 1 苦手順</option></select></div>
+        <div class="row"><div class="label"><strong>再生語数</strong><span>優先度の高い順</span></div><select id="listenLimit"><option value="15">15語</option><option value="30">30語</option><option value="50" selected>50語</option><option value="100">100語</option><option value="0">すべて</option></select></div>
+        <div class="row"><div class="label"><strong>日本語</strong><span>一語一義がおすすめ</span></div><select id="listenMeaningMode"><option value="primary" selected>一語一義だけ</option><option value="full">意味を全部</option></select></div>
+        <div class="row"><div class="label"><strong>順番をシャッフル</strong><span>1周ごとに並び替え</span></div><label class="toggle"><input type="checkbox" id="listenShuffle"><span></span></label></div>
+        <div class="row"><div class="label"><strong>ずっと繰り返す</strong><span>停止するまで巡回</span></div><label class="toggle"><input type="checkbox" id="listenLoop" checked><span></span></label></div>
+        <div class="row"><div class="label"><strong>画面をスリープさせない</strong><span>対応端末では通学中の停止を減らす</span></div><label class="toggle"><input type="checkbox" id="listenWake" checked><span></span></label></div>
+      </div>
+
+      <div class="section-title">プレーヤー</div>
+      <div class="card listen-player">
+        <div class="listen-status"><span id="listenPosition">0 / 0</span><span id="listenCycle">0周</span></div>
+        <div class="listen-word" id="listenWord">ready</div>
+        <div class="listen-meaning" id="listenMeaning"><span class="meaning-primary">弱点を読み込みます</span></div>
+        <div class="listen-progress"><div id="listenProgress" style="width:0%"></div></div>
+        <div class="listen-controls">
+          <button class="listen-skip" id="listenPrevBtn" aria-label="前の単語">◀</button>
+          <button class="listen-toggle" id="listenToggleBtn">▶ 連続再生を開始</button>
+          <button class="listen-skip" id="listenNextBtn" aria-label="次の単語">▶</button>
+        </div>
+        <div class="listen-countline" id="listenCountLine">再生対象を計算中…</div>
+        <div class="listen-mini">このモードは<b>聞き流し</b>なので、正解・定着の記録は変更しません。覚えた判定は3秒リコールで行います。</div>
+      </div>
+      <div class="listen-warning"><b>スマホの制限：</b>Webの読み上げ機能を使うため、iPhone/Safariなどでは画面ロックやバックグラウンド移行で音声が止まる場合があります。「画面をスリープさせない」をONにして、必要なら画面の明るさを下げて使ってください。</div>
+    </section>
+
     <section class="view" id="statsView">
       <div class="stats-grid">
         <div class="stat"><div class="v" id="sAttempts">0</div><div class="k">総回答</div></div>
@@ -485,6 +558,7 @@ select{border:1px solid var(--line);background:#fff;border-radius:12px;padding:1
   <button data-view="homeView" class="active"><span class="ico">⌂</span>ホーム</button>
   <button data-view="studyView"><span class="ico">▶</span>学習</button>
   <button data-view="mistakeView"><span class="ico">↺</span>誤答</button>
+  <button data-view="listenView"><span class="ico">🎧</span>聞く</button>
   <button data-view="statsView"><span class="ico">▥</span>記録</button>
 </nav>
 <div class="toast" id="toast"></div>
@@ -500,7 +574,8 @@ const K = {
   settings:"target1900_settings_v1",
   daily:"target1900_daily_v1",
   plan:"target1900_plan_v1",
-  focus:"target1900_focus_v1"
+  focus:"target1900_focus_v1",
+  listen:"target1900_listen_v1"
 };
 const DAY = 24*60*60*1000;
 const SCHEDULER_VERSION = 3;
@@ -513,12 +588,15 @@ let DAILY = loadJSON(K.daily, {});
 let PLAN = Object.assign({startDate:todayKey(),dailyNew:100}, loadJSON(K.plan, {}));
 const DEFAULT_FOCUS={phase:"book",part1End:800,bookStart:500,bookEnd:800,checkHistory:[],rescue:{}};
 let FOCUS = Object.assign({},DEFAULT_FOCUS,loadJSON(K.focus, {}));
+const DEFAULT_LISTEN={source:"active",limit:50,meaningMode:"primary",shuffle:false,loop:true,wake:true};
+let LISTEN=Object.assign({},DEFAULT_LISTEN,loadJSON(K.listen, {}));
 if(!Array.isArray(FOCUS.checkHistory)) FOCUS.checkHistory=[];
 if(!FOCUS.rescue || typeof FOCUS.rescue!=="object" || Array.isArray(FOCUS.rescue)) FOCUS.rescue={};
 let sessionQueue=[], currentIndex=0, sessionCorrect=0, sessionWrong=0, sessionAnswered=0, sessionRescueRecovered=0, sessionRescueGraduated=0, currentSessionMode="normal", currentSectionTarget=null;
 let retryCount={};
 let currentWord=null, currentPromptStart=0, timerDeadline=0, timerRemaining=3000, timerRAF=0, timerRunning=false, promptResolved=false;
 let voices=[];
+let listenQueue=[],listenIndex=0,listenCycles=0,listenPlaying=false,listenToken=0,listenWakeLock=null,listenDelayTimer=0;
 
 const $ = id => document.getElementById(id);
 function loadJSON(k,fallback){ try{const v=localStorage.getItem(k); return v?JSON.parse(v):fallback}catch(e){return fallback} }
@@ -663,7 +741,7 @@ function normalizeState(no){
   return s;
 }
 function persistAll(){
-  saveJSON(K.state,STATE); saveJSON(K.settings,SETTINGS); saveJSON(K.daily,DAILY); saveJSON(K.plan,PLAN); saveJSON(K.focus,FOCUS);
+  saveJSON(K.state,STATE); saveJSON(K.settings,SETTINGS); saveJSON(K.daily,DAILY); saveJSON(K.plan,PLAN); saveJSON(K.focus,FOCUS); saveJSON(K.listen,LISTEN);
 }
 function localDateFromKey(key){
   const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(key||""));
@@ -835,6 +913,196 @@ function setMeaning(el,meaning){
     const r=document.createElement("span"); r.className="meaning-rest"; r.textContent=rest; el.appendChild(r);
   }
 }
+function primaryMeaningText(meaning){
+  const raw=String(meaning??"");
+  const i=raw.indexOf("；");
+  return (i>=0?raw.slice(0,i):raw).trim();
+}
+function cleanMeaningForSpeech(meaning,mode="primary"){
+  let t=mode==="full"?String(meaning??""):primaryMeaningText(meaning);
+  // 参照番号や英語の比較注記は聞き流しではノイズになりやすいので簡略化。
+  t=t.replace(/（[^）]*(?:⇒|⇔|≒)[^）]*）/g,"")
+     .replace(/⇒\s*[A-Za-z0-9 .\-]+/g,"")
+     .replace(/[［\]【】]/g,"")
+     .replace(/；/g,"、")
+     .replace(/\s+/g," ").trim();
+  return t||primaryMeaningText(meaning)||String(meaning??"");
+}
+function getNextNew100Info(){
+  for(let start=1;start<=WORDS.length;start+=100){
+    const end=Math.min(WORDS.length,start+99);
+    const block=WORDS.filter(w=>w.no>=start&&w.no<=end);
+    const remaining=block.filter(w=>!(STATE[String(w.no)]?.attempts>0)).sort((a,b)=>a.no-b.no);
+    if(remaining.length){
+      const completed=block.length-remaining.length;
+      const secA=block[0]?.section||Math.ceil(start/100), secB=block[block.length-1]?.section||secA;
+      return {start,end,total:block.length,completed,remaining:remaining.length,words:remaining,sectionLabel:secA===secB?`Section ${secA}`:`Section ${secA}–${secB}`};
+    }
+  }
+  return {complete:true,start:WORDS.length,end:WORDS.length,total:0,completed:0,remaining:0,words:[],sectionLabel:"完了"};
+}
+function renderNew100(){
+  if(!WORDS.length) return;
+  const x=getNextNew100Info();
+  const btn=$("new100StartBtn");
+  if(x.complete){
+    $("new100Title").textContent="1900語の新規学習を一巡しました";
+    $("new100Desc").textContent="ここからは期限復習と弱点攻略を中心に進めます。";
+    $("new100Remaining").textContent="0"; $("new100Progress").style.width="100%";
+    $("new100Section").textContent="新規完了"; $("new100Range").textContent="No.1–1900";
+    btn.textContent="新規学習は完了"; btn.disabled=true; btn.style.opacity=".45"; return;
+  }
+  $("new100Title").textContent=`${x.sectionLabel} · No.${x.start}–${x.end}`;
+  const bookFirst=(FOCUS.phase||"book")==="book" && x.start>=500 && x.end<=800;
+  $("new100Desc").textContent=bookFirst
+    ?(x.completed?`単語帳で覚えたこの100語を続きから確認します。残り ${x.remaining}語です。`:`まず単語帳でこの100語を一度覚え、終わったらここで3秒確認します。`)
+    :(x.completed?`この100語区切りを続きから再開します。残り ${x.remaining}語です。`:`次の未学習100語をNo.順に出題します。`);
+  $("new100Remaining").textContent=x.remaining;
+  $("new100Progress").style.width=`${x.total?x.completed/x.total*100:0}%`;
+  $("new100Section").textContent=x.sectionLabel; $("new100Range").textContent=`No.${x.start}–${x.end}`;
+  btn.textContent=bookFirst?(x.completed?`残り${x.remaining}語を確認する`:`単語帳で覚えたら100語を確認`):(x.completed?`残り${x.remaining}語を続ける`:`新規100語を始める`);
+  btn.disabled=false; btn.style.opacity="1";
+}
+function readListenSettings(){
+  if(!$("listenSource")) return;
+  LISTEN.source=$("listenSource").value;
+  LISTEN.limit=parseInt($("listenLimit").value,10)||0;
+  LISTEN.meaningMode=$("listenMeaningMode").value;
+  LISTEN.shuffle=$("listenShuffle").checked;
+  LISTEN.loop=$("listenLoop").checked;
+  LISTEN.wake=$("listenWake").checked;
+  saveJSON(K.listen,LISTEN);
+}
+function applyListenSettings(){
+  if(!$("listenSource")) return;
+  $("listenSource").value=LISTEN.source||"active";
+  $("listenLimit").value=String(Number(LISTEN.limit)||0);
+  if(!Array.from($("listenLimit").options).some(o=>o.value===$("listenLimit").value)) $("listenLimit").value="50";
+  $("listenMeaningMode").value=LISTEN.meaningMode||"primary";
+  $("listenShuffle").checked=!!LISTEN.shuffle; $("listenLoop").checked=LISTEN.loop!==false; $("listenWake").checked=LISTEN.wake!==false;
+}
+function genericWeakScore(w){
+  const st=STATE[String(w.no)]||{};
+  return (st.lastResult!=="correct"?40:0)+Math.min(30,(st.lapses||0)*3)+Math.max(0,8-(st.successStreak||0)*2)+(Number.isFinite(st.lastLatency)?Math.max(0,(st.lastLatency-1200)/300):3);
+}
+function getListenPool(){
+  bootstrapRescueFromState();
+  let arr=[];
+  if(LISTEN.source==="active"){
+    arr=WORDS.filter(w=>{const r=FOCUS.rescue[String(w.no)];return r&&(r.status==="red"||r.status==="amber")});
+    arr.sort((a,b)=>{const ra=FOCUS.rescue[String(a.no)]?.status==="red"?1:0,rb=FOCUS.rescue[String(b.no)]?.status==="red"?1:0;return rb-ra||genericWeakScore(b)-genericWeakScore(a)});
+  }else if(LISTEN.source==="recent"){
+    arr=WORDS.filter(w=>(STATE[String(w.no)]?.lapses||0)>0).sort((a,b)=>(STATE[String(b.no)]?.lastSeen||0)-(STATE[String(a.no)]?.lastSeen||0));
+  }else if(LISTEN.source==="part1weak"){
+    arr=WORDS.filter(w=>w.no<=800&&(STATE[String(w.no)]?.attempts||0)>0&&part1Classify(w)!=="stable").sort((a,b)=>part1WeakScore(b)-part1WeakScore(a));
+  }else{
+    arr=WORDS.filter(w=>(STATE[String(w.no)]?.lapses||0)>0).sort((a,b)=>genericWeakScore(b)-genericWeakScore(a));
+  }
+  const lim=Number(LISTEN.limit)||0;
+  if(lim>0) arr=arr.slice(0,lim);
+  return arr;
+}
+function renderListenPreview(){
+  if(!$("listenCountLine")) return;
+  if(listenPlaying){ updateListenPlayer(); return; }
+  const pool=getListenPool();
+  $("listenCountLine").textContent=pool.length?`再生対象 ${pool.length}語 · 英→日→英を巡回します`:`この条件の弱点単語はありません`;
+  $("listenPosition").textContent=`0 / ${pool.length}`; $("listenCycle").textContent="0周"; $("listenProgress").style.width="0%";
+  if(pool.length){
+    $("listenWord").textContent=pool[0].word;
+    $("listenMeaning").textContent=cleanMeaningForSpeech(pool[0].meaning,LISTEN.meaningMode);
+  }else{
+    $("listenWord").textContent="ready"; $("listenMeaning").textContent="弱点はありません";
+  }
+  $("listenToggleBtn").textContent="▶ 連続再生を開始";
+}
+function voiceForLang(lang){
+  const pref=voices.find(v=>String(v.lang||"").toLowerCase()===lang.toLowerCase());
+  if(pref) return pref;
+  const base=lang.split("-")[0].toLowerCase();
+  return voices.find(v=>String(v.lang||"").toLowerCase().startsWith(base));
+}
+function utterAsync(text,lang,rate,token){
+  return new Promise(resolve=>{
+    if(!listenPlaying||token!==listenToken){resolve();return}
+    const u=new SpeechSynthesisUtterance(text); u.lang=lang; u.rate=rate; u.pitch=1;
+    const v=voiceForLang(lang); if(v) u.voice=v;
+    u.onend=()=>resolve(); u.onerror=()=>resolve();
+    speechSynthesis.speak(u);
+  });
+}
+function listenDelay(ms,token){
+  return new Promise(resolve=>{
+    if(!listenPlaying||token!==listenToken){resolve();return}
+    clearTimeout(listenDelayTimer); listenDelayTimer=setTimeout(resolve,ms);
+  });
+}
+async function requestListenWakeLock(){
+  if(!LISTEN.wake||!("wakeLock" in navigator)||document.hidden) return;
+  try{listenWakeLock=await navigator.wakeLock.request("screen");listenWakeLock.addEventListener("release",()=>{listenWakeLock=null});}catch(e){}
+}
+async function releaseListenWakeLock(){
+  try{if(listenWakeLock) await listenWakeLock.release()}catch(e){} listenWakeLock=null;
+}
+function updateListenPlayer(){
+  if(!listenQueue.length){renderListenPreview();return}
+  const w=listenQueue[Math.min(listenIndex,listenQueue.length-1)];
+  $("listenWord").textContent=w.word;
+  $("listenMeaning").textContent=cleanMeaningForSpeech(w.meaning,LISTEN.meaningMode);
+  $("listenPosition").textContent=`${listenIndex+1} / ${listenQueue.length}`;
+  $("listenCycle").textContent=`${listenCycles}周`;
+  $("listenProgress").style.width=`${listenQueue.length?(listenIndex+1)/listenQueue.length*100:0}%`;
+  $("listenCountLine").textContent=`No.${w.no} · Section ${w.section||"—"} · ${listenQueue.length}語を巡回中`;
+  $("listenToggleBtn").textContent=listenPlaying?"■ 一時停止":"▶ 再開";
+}
+async function runListenLoop(){
+  const token=listenToken;
+  await requestListenWakeLock();
+  while(listenPlaying&&token===listenToken&&listenQueue.length){
+    const w=listenQueue[listenIndex]; updateListenPlayer();
+    await utterAsync(w.word,"en-US",SETTINGS.speechRate||0.85,token); if(!listenPlaying||token!==listenToken) return;
+    await listenDelay(320,token); if(!listenPlaying||token!==listenToken) return;
+    await utterAsync(cleanMeaningForSpeech(w.meaning,LISTEN.meaningMode),"ja-JP",0.92,token); if(!listenPlaying||token!==listenToken) return;
+    await listenDelay(420,token); if(!listenPlaying||token!==listenToken) return;
+    await utterAsync(w.word,"en-US",SETTINGS.speechRate||0.85,token); if(!listenPlaying||token!==listenToken) return;
+    await listenDelay(780,token); if(!listenPlaying||token!==listenToken) return;
+    listenIndex++;
+    if(listenIndex>=listenQueue.length){
+      listenCycles++;
+      if(!LISTEN.loop){stopListening(false);toast("1周の再生が終わりました");return}
+      if(LISTEN.shuffle) shuffle(listenQueue);
+      listenIndex=0;
+    }
+  }
+}
+function startListening(){
+  if(!("speechSynthesis" in window)){toast("このブラウザは音声読み上げに対応していません");return}
+  readListenSettings();
+  if(!listenQueue.length) listenQueue=getListenPool().map(w=>Object.assign({},w));
+  if(!listenQueue.length){toast("再生できる弱点単語がありません");renderListenPreview();return}
+  if(LISTEN.shuffle&&listenIndex===0&&listenCycles===0) shuffle(listenQueue);
+  window.speechSynthesis.cancel(); clearTimeout(listenDelayTimer);
+  listenPlaying=true; listenToken++; updateListenPlayer(); runListenLoop();
+}
+function stopListening(reset=false){
+  listenPlaying=false; listenToken++; clearTimeout(listenDelayTimer); if("speechSynthesis" in window) speechSynthesis.cancel(); releaseListenWakeLock();
+  if(reset){listenQueue=[];listenIndex=0;listenCycles=0;renderListenPreview();} else updateListenPlayer();
+}
+function toggleListening(){ if(listenPlaying) stopListening(false); else startListening(); }
+function skipListen(delta){
+  readListenSettings();
+  if(!listenQueue.length) listenQueue=getListenPool().map(w=>Object.assign({},w));
+  if(!listenQueue.length){renderListenPreview();return}
+  const was=listenPlaying; if(was){listenPlaying=false;listenToken++;speechSynthesis.cancel();clearTimeout(listenDelayTimer)}
+  listenIndex=(listenIndex+delta+listenQueue.length)%listenQueue.length; updateListenPlayer();
+  if(was){listenPlaying=true;listenToken++;runListenLoop();}
+}
+function rebuildListenQueue(){
+  const was=listenPlaying; if(was) stopListening(false);
+  readListenSettings(); listenQueue=getListenPool().map(w=>Object.assign({},w)); listenIndex=0; listenCycles=0; renderListenPreview();
+  if(was) startListening();
+}
+
 function part1Classify(word){
   const s=STATE[String(word.no)];
   if(!s || !(s.attempts>0)) return "unchecked";
@@ -1090,6 +1358,7 @@ function refreshHome(){
   $("wrongStat").textContent=wrong;
   $("todayStat").textContent=d.attempts||0;
   $("accStat").textContent=attempts?`${Math.round(corrects/attempts*100)}%`:"—";
+  renderNew100();
   renderPart1Focus();
   renderSectionProgress();
   renderRescue();
@@ -1101,7 +1370,10 @@ function buildSession(mode="normal"){
   const inRange=WORDS.filter(w=>w.no>=SETTINGS.start&&w.no<=SETTINGS.end);
   const now=Date.now();
   let q=[];
-  if(mode==="plan"){
+  if(mode==="new100"){
+    const x=getNextNew100Info();
+    q=x.complete?[]:x.words.slice(0,100);
+  }else if(mode==="plan"){
     const info=getPlanInfo();
     const planEnd=info.after?WORDS.length:info.end;
     const dueAll=WORDS.filter(w=>w.no<=planEnd && (STATE[String(w.no)]?.attempts||0)>0 && (STATE[String(w.no)]?.due||Infinity)<=now);
@@ -1163,7 +1435,7 @@ function buildSession(mode="normal"){
   sessionQueue=q.map(w=>Object.assign({},w));
   currentIndex=0; sessionCorrect=0; sessionWrong=0; sessionAnswered=0; sessionRescueRecovered=0; sessionRescueGraduated=0; retryCount={};
   if(!sessionQueue.length){
-    let msg=mode==="wrong"?"誤答履歴がありません":mode==="plan"?"今日の新出と期限復習は完了しています":mode==="part1old"?"1〜499で期限が来ている復習はありません":mode==="part1assess"?"500〜800の未確認はありません":mode==="part1weak"?"今日攻略する弱点はありません":mode==="sectionweak"?`Section ${currentSectionTarget||""} に攻略対象はありません`:mode==="part1check"?"800語すべてを一度確認してからランダムチェックできます":"出題できる単語がありません";
+    let msg=mode==="wrong"?"誤答履歴がありません":mode==="new100"?"新規学習する未学習語はありません":mode==="plan"?"今日の新出と期限復習は完了しています":mode==="part1old"?"1〜499で期限が来ている復習はありません":mode==="part1assess"?"500〜800の未確認はありません":mode==="part1weak"?"今日攻略する弱点はありません":mode==="sectionweak"?`Section ${currentSectionTarget||""} に攻略対象はありません`:mode==="part1check"?"800語すべてを一度確認してからランダムチェックできます":"出題できる単語がありません";
     if(mode==="plan"){
       const st=planWordStats(getPlanInfo());
       if(st.dueTotal>0 && st.capRemaining<=0) msg="今日の復習上限に到達しました。残りは明日以降へ繰り越します";
@@ -1269,6 +1541,7 @@ function finishSession(){
   const acc=denom?Math.round(sessionCorrect/denom*100):0;
   $("summaryAccuracy").textContent=`${acc}%`;
   let summary=`正解 ${sessionCorrect} / 誤答 ${sessionWrong}（再テストを含む）`;
+  if(currentSessionMode==="new100") summary=`新規100語：正解 ${sessionCorrect} / 誤答 ${sessionWrong}（再テストを含む）`;
   if(currentSessionMode==="part1weak" || currentSessionMode==="sectionweak"){
     summary=`弱点攻略：正解 ${sessionCorrect} / 誤答 ${sessionWrong} · 仮クリア ${sessionRescueRecovered} · 今日卒業 ${sessionRescueGraduated}`;
   }
@@ -1368,12 +1641,14 @@ function switchView(id,refresh=true){
   if(refresh){
     if(id==="homeView") refreshHome();
     if(id==="mistakeView") renderMistakes();
+    if(id==="listenView") renderListenPreview();
     if(id==="statsView") renderStats();
   }
 }
 document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.view)));
 
 $("startBtn").onclick=()=>startSession("normal");
+$("new100StartBtn").onclick=()=>startSession("new100");
 $("planStartBtn").onclick=()=>startSession("plan");
 $("part1ReviewOldBtn").onclick=()=>startSession("part1old");
 $("part1BookDoneBtn").onclick=()=>{
@@ -1397,8 +1672,15 @@ $("mistakeSearch").addEventListener("input",renderMistakes);
 ["rangeStart","rangeEnd","sessionSize","autoAudio","speechRate","reviewCap"].forEach(id=>{
   $(id).addEventListener("change",()=>{readSettings();refreshHome()});
 });
+["listenSource","listenLimit","listenMeaningMode","listenShuffle","listenLoop","listenWake"].forEach(id=>{
+  $(id).addEventListener("change",rebuildListenQueue);
+});
+$("listenToggleBtn").onclick=toggleListening;
+$("listenPrevBtn").onclick=()=>skipListen(-1);
+$("listenNextBtn").onclick=()=>skipListen(1);
+
 $("exportBtn").onclick=()=>{
-  const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),state:STATE,daily:DAILY,settings:SETTINGS,plan:PLAN,focus:FOCUS},null,2)],{type:"application/json"});
+  const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),state:STATE,daily:DAILY,settings:SETTINGS,plan:PLAN,focus:FOCUS,listen:LISTEN},null,2)],{type:"application/json"});
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`target1900-history-${todayKey()}.json`; a.click(); URL.revokeObjectURL(a.href);
 };
 $("resetBtn").onclick=()=>{
@@ -1409,16 +1691,24 @@ $("resetBtn").onclick=()=>{
 document.addEventListener("visibilitychange",()=>{
   if(document.hidden){
     if(timerRunning){ timerRemaining=Math.max(0,timerDeadline-performance.now()); clearTimer(); }
-    if("speechSynthesis" in window) speechSynthesis.cancel();
-  }else if(!promptResolved && currentWord && $("studyView").classList.contains("active") && timerRemaining>0){
-    currentPromptStart=performance.now()-(3000-timerRemaining);
-    startTimer();
+    if(!listenPlaying && "speechSynthesis" in window) speechSynthesis.cancel();
+  }else{
+    if(!promptResolved && currentWord && $("studyView").classList.contains("active") && timerRemaining>0){
+      currentPromptStart=performance.now()-(3000-timerRemaining);
+      startTimer();
+    }
+    if(listenPlaying){
+      // OSがバックグラウンド中にTTSを止めた場合、現在語から自動再開する。
+      listenToken++; if("speechSynthesis" in window) speechSynthesis.cancel(); requestListenWakeLock(); runListenLoop();
+    }
   }
 });
 
 migrateState();
 applySettingsToUI();
+applyListenSettings();
 refreshAll();
+renderListenPreview();
 </script>
 </body>
 </html>
